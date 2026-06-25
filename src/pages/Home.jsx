@@ -16,61 +16,141 @@ function Home() {
       {/* Welcome Banner */}
       {user ? (
         <div style={{
-          background: "linear-gradient(135deg, #1a0050, #4a0080, #1a0050)",
+          background: "#1a1a2e",
           borderBottom: "2px solid #ff4500",
-          padding: "18px 32px",
+          padding: "14px 32px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
-          boxShadow: "0 4px 20px rgba(255,69,0,0.2)"
         }}>
           <div>
-            <div style={{ fontSize: "22px", fontWeight: "800", color: "#ffffff" }}>
+            <div style={{ fontSize: "20px", fontWeight: "800", color: "#ffffff" }}>
               🎉 Welcome back, <span style={{ color: "#ff4500" }}>{user.name}</span>!
             </div>
-            <div style={{ fontSize: "14px", color: "#ccaaff", marginTop: "4px" }}>
+            <div style={{ fontSize: "13px", color: "#ccaaff", marginTop: "3px" }}>
               ✨ Explore today's fresh Telangana specials just for you
             </div>
           </div>
         </div>
       ) : (
         <div style={{
-          background: "linear-gradient(135deg, #0d0d0d, #1a0a00, #0d0d0d)",
+          background: "#1a1a2e",
           borderBottom: "2px solid #ff4500",
-          padding: "20px 32px",
+          padding: "14px 32px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
-          boxShadow: "0 4px 20px rgba(255,69,0,0.2)"
         }}>
           <div>
-            <div style={{ fontSize: "22px", fontWeight: "800", color: "#ffffff", marginBottom: "6px" }}>
-              🛍️ Taste the Soul of Telangana!
+            <div style={{ fontSize: "20px", fontWeight: "800", color: "#ffffff" }}>
+              🛍️ Taste the Soul of <span style={{ color: "#ff4500" }}>Telangana</span>!
             </div>
-            <div style={{ fontSize: "14px", color: "#ffaa80", marginTop: "4px" }}>
-              🌟 Handpicked authentic products delivered to your door —{" "}
-              <Link to="/register" style={{ color: "#ff4500", fontWeight: "700", textDecoration: "underline" }}>
-                Create Free Account
-              </Link>{" "}
+            <div style={{ fontSize: "13px", color: "#ffaa80", marginTop: "3px" }}>
+              🌟 Handpicked authentic products —{" "}
+              <Link to="/register" style={{ color: "#ff4500", fontWeight: "700", textDecoration: "underline" }}>Create Free Account</Link>{" "}
               or{" "}
-              <Link to="/" style={{ color: "#ff4500", fontWeight: "700", textDecoration: "underline" }}>
-                Sign In
-              </Link>
+              <Link to="/" style={{ color: "#ff4500", fontWeight: "700", textDecoration: "underline" }}>Sign In</Link>
             </div>
           </div>
         </div>
       )}
 
-      {/* Hero Section */}
-      <div className="hero-section">
-        <div className="hero-content">
-          <h1 className="hero-title">🌶️ Telangana Special</h1>
-          <p className="hero-subtitle">Authentic Telangana Foods & Traditional Products</p>
-          <div className="hero-buttons">
-            <Link to="/products" className="hero-btn-primary">Shop Now →</Link>
-            <Link to="/register" className="hero-btn-secondary">Join Us</Link>
+      {/* Hero Section with Video Background */}
+      <div style={{
+        position: "relative",
+        width: "100%",
+        height: "100vh",
+        overflow: "hidden",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+        {/* Background Video */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            minWidth: "100%",
+            minHeight: "100%",
+            width: "auto",
+            height: "auto",
+            objectFit: "cover",
+            zIndex: 0,
+          }}
+        >
+          <source src="/food-video.mp4" type="video/mp4" />
+        </video>
+
+        {/* Dark overlay */}
+        <div style={{
+          position: "absolute",
+          top: 0, left: 0,
+          width: "100%", height: "100%",
+          background: "rgba(0,0,0,0.5)",
+          zIndex: 1,
+        }} />
+
+        {/* Hero Content */}
+        <div style={{
+          position: "relative",
+          zIndex: 2,
+          textAlign: "center",
+          padding: "0 24px",
+          maxWidth: "700px",
+        }}>
+          <h1 style={{
+            fontSize: "clamp(36px, 6vw, 72px)",
+            fontWeight: "900",
+            color: "#ffffff",
+            marginBottom: "16px",
+            letterSpacing: "-1px",
+            textShadow: "0 2px 20px rgba(0,0,0,0.5)",
+          }}>
+            🌶️ Telangana Special
+          </h1>
+          <p style={{
+            fontSize: "clamp(16px, 2.5vw, 22px)",
+            color: "#f0f0f0",
+            marginBottom: "36px",
+            lineHeight: "1.6",
+            textShadow: "0 1px 10px rgba(0,0,0,0.5)",
+          }}>
+            Authentic Telangana Foods & Traditional Products
+          </p>
+          <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
+            <Link to="/products" style={{
+              background: "#ff4500",
+              color: "#ffffff",
+              padding: "16px 40px",
+              borderRadius: "50px",
+              fontWeight: "700",
+              fontSize: "18px",
+              textDecoration: "none",
+              boxShadow: "0 4px 20px rgba(255,69,0,0.4)",
+            }}>
+              Shop Now →
+            </Link>
+            <Link to="/register" style={{
+              background: "rgba(255,255,255,0.15)",
+              color: "#ffffff",
+              padding: "16px 40px",
+              borderRadius: "50px",
+              fontWeight: "700",
+              fontSize: "18px",
+              textDecoration: "none",
+              border: "2px solid rgba(255,255,255,0.6)",
+              backdropFilter: "blur(10px)",
+            }}>
+              Join Us
+            </Link>
           </div>
         </div>
       </div>
