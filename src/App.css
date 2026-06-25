@@ -1359,29 +1359,7 @@ h1, h2, h3, h4 {
     position: relative;
   }
 
-  /* Mobile dropdown menu - hidden by default, only shown via .active class
-     set by Navbar.jsx's menuOpen state. This must NOT show nav-links
-     by default, or it overrides the JS toggle logic. */
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
-    font-size: 15px;
-    background: var(--bg-nav);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 20px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.4);
-    z-index: 99;
-  }
 
-  .nav-links.active {
-    display: flex;
-  }
 
   .nav-links a {
     width: 100%;
@@ -1620,4 +1598,5 @@ h1, h2, h3, h4 {
   background: #dc3545;
   color: white;
 }
+
 
