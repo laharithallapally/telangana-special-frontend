@@ -47,8 +47,12 @@ function Register() {
 
     setLoading(true);
     try {
-      const response = await api.post("/auth/register", formData);
-      // save token and redirect to products
+ const response = await api.post("/auth/register", {
+  ...formData,
+  email: formData.email.trim(),
+  name: formData.name.trim(),
+  phone: formData.phone.trim()
+});      // save token and redirect to products
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data));
       setMessage("✅ Registration successful! Redirecting...");
