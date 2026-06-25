@@ -68,8 +68,21 @@ h1, h2, h3, h4 {
 
 .nav-links {
   display: none;
-  align-items: center;
-  gap: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 20px;
+  position: absolute;
+  top: 64px;
+  left: 0;
+  width: 100%;
+  background: var(--bg-nav);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+  z-index: 99;
+}
+.nav-links.active {
+  display: flex;
 }
 .nav-links a {
   color: var(--text-secondary);
@@ -1607,3 +1620,4 @@ h1, h2, h3, h4 {
   background: #dc3545;
   color: white;
 }
+
