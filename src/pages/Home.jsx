@@ -1,15 +1,30 @@
 import { Link } from "react-router-dom";
 
 function Home() {
+  const user = JSON.parse(localStorage.getItem("user") || "null");
+
   const categories = [
     { emoji: "🍘", name: "Traditional Snacks", desc: "Sarvapindi, Vadalu & more", category: "Snacks" },
     { emoji: "🍬", name: "Sweets", desc: "Bobbatlu & Telangana sweets", category: "Sweets" },
     { emoji: "🌶️", name: "Pickles", desc: "Traditional homemade pickles", category: "Pickles" },
     { emoji: "🎨", name: "Handicrafts", desc: "Local artisan products", category: "Handicrafts" },
-  ]
+  ];
 
   return (
     <div className="home-page">
+
+      {/* Welcome Message */}
+      {user && (
+        <div style={{
+          background: "#1a1a1a",
+          borderBottom: "1px solid #2a2a2a",
+          padding: "12px 32px",
+          fontSize: "15px",
+          color: "#e0e0e0"
+        }}>
+          👋 Welcome back, <strong style={{ color: "#ff4500" }}>{user.name}</strong>!
+        </div>
+      )}
 
       {/* Hero Section */}
       <div className="hero-section">
@@ -57,7 +72,7 @@ function Home() {
         <div className="categories-grid">
           {categories.map((cat, index) => (
             <Link
-              to={`/products`}
+              to="/products"
               key={index}
               className="category-card"
             >
@@ -101,7 +116,7 @@ function Home() {
       </div>
 
     </div>
-  )
+  );
 }
 
 export default Home;

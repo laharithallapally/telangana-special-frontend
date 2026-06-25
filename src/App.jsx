@@ -14,10 +14,9 @@ import AdminRoute from "./components/AdminRoute";
 
 import Navbar from "./components/Navbar";
 import AdminEditProduct from "./pages/AdminEditProduct";
-
-import AdminDashboard from "./pages/AdminDashboard";
 import AdminOrders from "./pages/AdminOrders";
 import ManageProducts from "./pages/ManageProducts";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -28,67 +27,21 @@ function App() {
         {/* Public Routes */}
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/products/:id" element={<ProductDetails />} />
-        <Route path="/admin/edit-product/:id" element={
-  <AdminRoute><AdminEditProduct /></AdminRoute>
-} />
-        {/* Protected User Routes */}
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
 
-        <Route
-          path="/cart"
-          element={
-            <ProtectedRoute>
-              <Cart />
-            </ProtectedRoute>
-          }
-        />
+        {/* Protected Routes */}
+        <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
+        <Route path="/products/:id" element={<ProtectedRoute><ProductDetails /></ProtectedRoute>} />
 
-        <Route
-          path="/orders"
-          element={
-            <ProtectedRoute>
-              <Orders />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+        <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
 
         {/* Admin Routes */}
-        <Route
-          path="/admin"
-          element={
-            <AdminRoute>
-              <AdminDashboard />
-            </AdminRoute>
-          }
-        />
-
-        <Route
-          path="/admin/products"
-          element={
-            <AdminRoute>
-              <ManageProducts />
-            </AdminRoute>
-          }
-        />
-
-        <Route
-          path="/admin/orders"
-          element={
-            <AdminRoute>
-              <AdminOrders />
-            </AdminRoute>
-          }
-        />
+        <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+        <Route path="/admin/products" element={<AdminRoute><ManageProducts /></AdminRoute>} />
+        <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>} />
+        <Route path="/admin/edit-product/:id" element={<AdminRoute><AdminEditProduct /></AdminRoute>} />
       </Routes>
     </>
   );
