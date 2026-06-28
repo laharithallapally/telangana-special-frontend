@@ -382,11 +382,11 @@ function Navbar({ cartCount = 0 }) {
 
           {/* Social */}
           <div style={{ display: "flex", gap: "16px", marginTop: "28px" }}>
-            <a href="https://wa.me/" target="_blank" rel="noreferrer">
+            <a href="https://wa.me/916301073289" target="_blank" rel="noreferrer">
               <img src={whatsappIcon} alt="WhatsApp"
                 style={{ width: "38px", height: "38px", objectFit: "contain" }} />
             </a>
-            <a href="https://instagram.com/" target="_blank" rel="noreferrer">
+            <a href="https://www.instagram.com/telanganasarvapindi/?hl=en" target="_blank" rel="noreferrer">
               <img src={instagramIcon} alt="Instagram"
                 style={{ width: "38px", height: "38px", objectFit: "contain" }} />
             </a>
