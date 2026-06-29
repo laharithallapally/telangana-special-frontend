@@ -19,8 +19,6 @@ import chocolateBobbatlu from "../assets/products/chocolate-bobbatlu.png";
 import carrotBobbatlu from "../assets/products/carrot-bobbatlu.png";
 import sarvapindi from "../assets/products/sarvapindi.png";
 
-import instagramIcon from "../assets/icons/instagram.png";
-import whatsappIcon from "../assets/icons/whatsapp.png";
 
 const FEATURES = [
   { icon: "🌿", title: "100% AUTHENTIC",               sub: "Traditional Telangana Recipes" },
