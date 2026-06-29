@@ -706,14 +706,7 @@ export default function Home() {
               <div style={{ color:"#fff", fontWeight:"800", fontSize:"14px" }}>Dine-in & Takeaway</div>
             </div>
             <div style={{ background:"rgba(255,255,255,.2)", borderRadius:"10px", padding:"10px 12px", fontSize:"24px" }}>🛍️</div>
-            <a href="https://wa.me/916301073289" target="_blank" rel="noreferrer">
-              <img src={whatsappIcon} alt="WhatsApp"
-                style={{ width:"36px", height:"36px", objectFit:"contain", filter:"brightness(0) invert(1)" }}/>
-            </a>
-            <a href="https://https://www.instagram.com/telanganasarvapindi/?hl=en" target="_blank" rel="noreferrer">
-              <img src={instagramIcon} alt="Instagram"
-                style={{ width:"36px", height:"36px", objectFit:"contain", filter:"brightness(0) invert(1)" }}/>
-            </a>
+            
           </div>
         </div>
 
