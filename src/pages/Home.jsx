@@ -67,11 +67,11 @@ export default function Home() {
 
   return (
     <div style={{ background: "#1a0d05", fontFamily: "'Segoe UI', sans-serif", overflowX: "hidden" }}>
-
+      
       <style>{`
         @keyframes floatA {
-          0%,100% { transform: translateY(-50%); }
-          50%      { transform: translateY(-50%); }
+          0%,100% { transform: translateY(0); }
+          50%      { transform: translateY(-14px); }
         }
         @keyframes shimmer {
           0%   { background-position: -200% center; }
@@ -97,28 +97,20 @@ export default function Home() {
 
         /* ── RESPONSIVE ── */
         @media (max-width:768px) {
-          .hero-copy  {
-            left: 0!important; right: 0!important;
-            top: auto!important; transform: none!important;
-            position: relative!important;
-            text-align: center!important;
-            padding: 32px 20px!important;
-          }
-          .hero-charminar { display:none!important; }
-          .hero-food  {
-            position: relative!important;
-            width: 100%!important;
-            height: 55vw!important;
-            right: auto!important; top: auto!important;
-            object-fit: cover!important;
-            object-position: center top!important;
-          }
-          .hero-inner { flex-direction:column!important; align-items:center!important; text-align:center!important; }
-          .hero-callout { right:8px!important; bottom:80px!important; }
+          .hero-section { height:auto!important; min-height:100vh!important; padding:100px 0 40px!important; }
+          .hero-copy  { padding-left:20px!important; padding-right:20px!important; }
+          .hero-charminar { display:none!important; width:0!important; height:0!important; }
+          .hero-food  { display:block!important; width:88%!important; max-width:340px!important;
+                        position:relative!important; margin:24px auto 0!important;
+                        right:auto!important; left:auto!important; top:auto!important; transform:none!important; }
+          .hero-callout { position:relative!important; right:auto!important; bottom:auto!important;
+                           margin:24px auto 0!important; width:fit-content!important; }
           .features-strip { gap:0!important; flex-direction:column!important; }
-          .features-strip > div { border-right:none!important; border-bottom:1px solid rgba(255,255,255,.08)!important; }
+          .features-strip > div { border-right:none!important; border-bottom:1px solid rgba(255,255,255,.08)!important; width:100%!important; }
+          .about-section { padding:48px 24px!important; min-height:auto!important; }
           .about-grid { flex-direction:column!important; }
-          .about-img-wrap { max-height:320px!important; }
+          .about-imgs { flex-direction:row!important; gap:10px!important; }
+          .about-imgs img { height:140px!important; }
           .products-grid { grid-template-columns:repeat(2,1fr)!important; }
           .bestsellers-grid { grid-template-columns:repeat(2,1fr)!important; }
           .footer-inner { flex-direction:column!important; text-align:center!important; gap:20px!important; }
@@ -127,12 +119,11 @@ export default function Home() {
         @media (max-width:480px) {
           .products-grid  { grid-template-columns:1fr!important; }
           .bestsellers-grid { grid-template-columns:1fr!important; }
-          .hero-food { height: 70vw!important; }
         }
       `}</style>
-
+      
     
-      <div style={{
+      <div className="hero-section" style={{
         position: "relative",
         width: "100%",
         height: "100vh",
@@ -141,7 +132,7 @@ export default function Home() {
         background: "linear-gradient(120deg,#110800 0%,#2a1208 55%,#110800 100%)",
         display: "flex",
         alignItems: "center",
-        justifyContent: "flex-start",
+        boxSizing: "border-box",
       }}>
 
         {/* dot texture */}
@@ -387,13 +378,12 @@ export default function Home() {
       {/* ═══════════════════════════════════
           PAGE 2 — ABOUT / DESCRIPTION
       ═══════════════════════════════════ */}
-      <div style={{
-        background: "#110800",
-        padding: "80px 64px",
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        boxSizing: "border-box",
+      <div className="about-section" style={{
+        background:"#110800",
+        padding:"80px 64px",
+        minHeight:"100vh",
+        display:"flex",alignItems:"center",
+        boxSizing:"border-box",
       }}>
         <div className="about-grid" style={{
           display: "flex",
