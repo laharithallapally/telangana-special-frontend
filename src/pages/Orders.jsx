@@ -20,12 +20,18 @@ function Orders() {
     }
   }
 
+  const STATUS_STEPS = ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED']
+
+  const getStatusIndex = (status) => {
+    if (status === 'CANCELLED') return -1
+    return STATUS_STEPS.indexOf(status)
+  }
+
   const getStatusColor = (status) => {
     const colors = {
       PENDING: '#f39c12',
-      CONFIRMED: '#3498db',
-      PREPARING: '#9b59b6',
-      OUT_FOR_DELIVERY: '#1abc9c',
+      PROCESSING: '#3498db',
+      SHIPPED: '#9b59b6',
       DELIVERED: '#2ecc71',
       CANCELLED: '#e74c3c'
     }
@@ -35,9 +41,8 @@ function Orders() {
   const getStatusEmoji = (status) => {
     const emojis = {
       PENDING: '🕐',
-      CONFIRMED: '✅',
-      PREPARING: '👨‍🍳',
-      OUT_FOR_DELIVERY: '🛵',
+      PROCESSING: '⚙️',
+      SHIPPED: '🚚',
       DELIVERED: '🎉',
       CANCELLED: '❌'
     }
@@ -104,6 +109,96 @@ function Orders() {
               {getStatusEmoji(order.status)} {order.status.replace('_', ' ')}
             </span>
           </div>
+
+          {/* Status Timeline */}
+          {order.status !== 'CANCELLED' ? (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              margin: '20px 0',
+              padding: '0 8px',
+              position: 'relative'
+            }}>
+              {/* Progress line behind steps */}
+              <div style={{
+                position: 'absolute',
+                top: '18px',
+                left: '24px',
+                right: '24px',
+                height: '3px',
+                background: '#2a2a2a',
+                zIndex: 0
+              }} />
+              <div style={{
+                position: 'absolute',
+                top: '18px',
+                left: '24px',
+                height: '3px',
+                width: `${(getStatusIndex(order.status) / (STATUS_STEPS.length - 1)) * 100}%`,
+                background: getStatusColor(order.status),
+                zIndex: 1,
+                transition: 'width 0.4s ease'
+              }} />
+
+              {STATUS_STEPS.map((step, index) => {
+                const currentIndex = getStatusIndex(order.status)
+                const isCompleted = index <= currentIndex
+                const isActive = index === currentIndex
+                return (
+                  <div key={step} style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '8px',
+                    zIndex: 2,
+                    flex: 1
+                  }}>
+                    <div style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      background: isCompleted ? getStatusColor(order.status) : '#2a2a2a',
+                      border: isActive ? `3px solid ${getStatusColor(order.status)}` : '3px solid #2a2a2a',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '16px',
+                      boxShadow: isActive ? `0 0 12px ${getStatusColor(order.status)}88` : 'none',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      {isCompleted ? '✓' : index + 1}
+                    </div>
+                    <span style={{
+                      fontSize: '11px',
+                      color: isCompleted ? getStatusColor(order.status) : 'var(--text-secondary)',
+                      fontWeight: isActive ? '600' : '400',
+                      textAlign: 'center',
+                      lineHeight: '1.3'
+                    }}>
+                      {step === 'PENDING' ? '🕐 Pending' :
+                       step === 'PROCESSING' ? '⚙️ Processing' :
+                       step === 'SHIPPED' ? '🚚 Shipped' :
+                       '🎉 Delivered'}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+          ) : (
+            <div style={{
+              background: 'rgba(231,76,60,0.1)',
+              border: '1px solid #e74c3c',
+              borderRadius: '10px',
+              padding: '12px 16px',
+              margin: '16px 0',
+              color: '#e74c3c',
+              fontSize: '14px',
+              textAlign: 'center'
+            }}>
+              ❌ This order has been cancelled
+            </div>
+          )}
 
           {/* Order Items */}
           <div className="order-items">
