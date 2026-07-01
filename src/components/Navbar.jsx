@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-
+import NotificationBell from "./NotificationBell";
 const NAV_LINKS = [
   { to: "/home",      label: "Home" },
   { to: "/products",  label: "Menu" },
@@ -199,6 +199,16 @@ function Navbar({ cartCount = 0 }) {
           }}>{menuOpen ? "✕" : "☰"}</button>
         </div>
       </nav>
+      {/* Notification Bell */}
+{user && <NotificationBell />}
+
+{/* Mobile Menu Button */}
+<button
+  className="menu-toggle"
+  onClick={() => setMenuOpen(!menuOpen)}
+>
+  ☰
+</button>
 
       {/* MOBILE DRAWER */}
       {menuOpen && (
