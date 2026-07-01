@@ -6,15 +6,18 @@ function NotificationBell() {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
+  const [toast, setToast] = useState(null);
   const dropdownRef = useRef(null);
+  const prevUnreadRef = useRef(0);
+  const toastTimerRef = useRef(null);
 
   const user = JSON.parse(localStorage.getItem("user") || "null");
 
   useEffect(() => {
     if (!user) return;
 
-    fetchUnreadCount();
-    const interval = setInterval(fetchUnreadCount, 15000);
+    fetchUnreadCount(true); // initial load, don't toast on first check
+    const interval = setInterval(() => fetchUnreadCount(false), 15000);
 
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -26,16 +29,47 @@ function NotificationBell() {
     return () => {
       clearInterval(interval);
       document.removeEventListener("mousedown", handleClickOutside);
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     };
   }, []);
 
-  const fetchUnreadCount = async () => {
+  const fetchUnreadCount = async (isInitial) => {
     try {
       const res = await api.get("/notifications/unread-count");
-      setUnreadCount(res.data.count);
+      const newCount = res.data.count;
+
+      if (!isInitial && newCount > prevUnreadRef.current) {
+        fetchLatestNotificationForToast();
+      }
+
+      prevUnreadRef.current = newCount;
+      setUnreadCount(newCount);
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const fetchLatestNotificationForToast = async () => {
+    try {
+      const res = await api.get("/notifications");
+      if (res.data && res.data.length > 0) {
+        const latest = res.data[0]; // assumes newest first
+        showToast(latest.message);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const showToast = (message) => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    setToast(message);
+    toastTimerRef.current = setTimeout(() => setToast(null), 6000);
+  };
+
+  const closeToast = () => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    setToast(null);
   };
 
   const fetchNotifications = async () => {
@@ -56,6 +90,7 @@ function NotificationBell() {
       try {
         await api.put("/notifications/mark-read");
         setUnreadCount(0);
+        prevUnreadRef.current = 0;
       } catch (err) {
         console.error(err);
       }
@@ -73,35 +108,48 @@ function NotificationBell() {
   if (!user) return null;
 
   return (
-    <div className="notif-bell-wrapper" ref={dropdownRef}>
-      <button className="notif-bell-btn" onClick={toggleDropdown}>
-        🔔
-        {unreadCount > 0 && (
-          <span className="notif-badge">{unreadCount > 9 ? "9+" : unreadCount}</span>
-        )}
-      </button>
-
-      {open && (
-        <div className="notif-dropdown">
-          <div className="notif-dropdown-header">Notifications</div>
-          {notifications.length === 0 ? (
-            <div className="notif-empty">No notifications yet 📭</div>
-          ) : (
-            <div className="notif-list">
-              {notifications.map((n) => (
-                <div
-                  key={n.id}
-                  className={`notif-item ${!n.isRead ? "notif-unread" : ""}`}
-                >
-                  <p className="notif-message">{n.message}</p>
-                  <span className="notif-time">{timeAgo(n.createdAt)}</span>
-                </div>
-              ))}
-            </div>
+    <>
+      <div className="notif-bell-wrapper" ref={dropdownRef}>
+        <button className="notif-bell-btn" onClick={toggleDropdown}>
+          🔔
+          {unreadCount > 0 && (
+            <span className="notif-badge">{unreadCount > 9 ? "9+" : unreadCount}</span>
           )}
+        </button>
+
+        {open && (
+          <div className="notif-dropdown">
+            <div className="notif-dropdown-header">Notifications</div>
+            {notifications.length === 0 ? (
+              <div className="notif-empty">No notifications yet 📭</div>
+            ) : (
+              <div className="notif-list">
+                {notifications.map((n) => (
+                  <div
+                    key={n.id}
+                    className={`notif-item ${!n.isRead ? "notif-unread" : ""}`}
+                  >
+                    <p className="notif-message">{n.message}</p>
+                    <span className="notif-time">{timeAgo(n.createdAt)}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {toast && (
+        <div className="notif-toast">
+          <span className="notif-toast-text">
+            🎉 Hey {user.name}! {toast}
+          </span>
+          <button className="notif-toast-close" onClick={closeToast}>
+            ×
+          </button>
         </div>
       )}
-    </div>
+    </>
   );
 }
 
