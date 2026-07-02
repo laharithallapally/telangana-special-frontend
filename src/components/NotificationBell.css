@@ -177,3 +177,18 @@
     transform: translateX(-50%) translateY(0);
   }
 }
+.enable-push-btn {
+  width: 100%;
+  background: #e23744;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.push-blocked-note, .push-error {
+  display: block;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #999;
+}

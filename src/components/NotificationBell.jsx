@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import api from "../api/axiosConfig";
+import { usePushNotifications } from "../hooks/usePushNotifications";
 import "./NotificationBell.css";
 
 function NotificationBell() {
@@ -10,6 +11,8 @@ function NotificationBell() {
   const dropdownRef = useRef(null);
   const prevUnreadRef = useRef(0);
   const toastTimerRef = useRef(null);
+
+  const { permissionState, enablePush, error } = usePushNotifications();
 
   const user = JSON.parse(localStorage.getItem("user") || "null");
 
@@ -31,6 +34,15 @@ function NotificationBell() {
       document.removeEventListener("mousedown", handleClickOutside);
       if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     };
+  }, []);
+
+  // Firebase push arriving while tab is open -> reuse the same toast banner
+  useEffect(() => {
+    function handlePush(e) {
+      showToast(e.detail.title ? `${e.detail.title}: ${e.detail.body}` : e.detail.body);
+    }
+    window.addEventListener("push-notification", handlePush);
+    return () => window.removeEventListener("push-notification", handlePush);
   }, []);
 
   const fetchUnreadCount = async (isInitial) => {
@@ -120,6 +132,19 @@ function NotificationBell() {
         {open && (
           <div className="notif-dropdown">
             <div className="notif-dropdown-header">Notifications</div>
+
+            {permissionState === "default" && (
+              <button className="enable-push-btn" onClick={enablePush}>
+                🔔 Get order updates
+              </button>
+            )}
+            {permissionState === "denied" && (
+              <span className="push-blocked-note">
+                Notifications are blocked — enable them in your browser's site settings.
+              </span>
+            )}
+            {error && <span className="push-error">{error}</span>}
+
             {notifications.length === 0 ? (
               <div className="notif-empty">No notifications yet 📭</div>
             ) : (
