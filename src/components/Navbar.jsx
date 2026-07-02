@@ -78,13 +78,38 @@ function Navbar({ cartCount = 0 }) {
         }
       `}</style>
 
+      {/* UTILITY BAR — contact + bulk orders */}
+      <div style={{
+        background: "#faeeda",
+        borderBottom: "1px solid rgba(201,82,30,0.12)",
+        padding: "7px 40px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+        gap: "6px",
+        fontSize: "12px",
+        position: "sticky",
+        top: 0,
+        zIndex: 1001,
+      }}>
+        <a href="tel:+919876543210" style={{
+          color: "#854f0b", fontWeight: "600", textDecoration: "none",
+          display: "flex", alignItems: "center", gap: "6px",
+        }}>📞 +91 98765 43210</a>
+        <span style={{ color: "#854f0b", fontWeight: "600" }}>
+          🎉 Bulk orders &amp; party catering available — call us to book
+        </span>
+      </div>
+
       <nav className="ts-nav" style={{
         position: "sticky",
-        top: 0, left: 0, right: 0,
+        top: "29px",
+        left: 0, right: 0,
         zIndex: 1000,
         background: "#fff",
-        borderBottom: "1px solid rgba(226,99,43,0.15)",
-        boxShadow: "0 2px 16px rgba(0,0,0,0.08)",
+        borderBottom: "1px solid rgba(201,82,30,0.15)",
+        boxShadow: "0 2px 16px rgba(65,36,2,0.06)",
         padding: "0 40px",
         height: "68px",
         display: "flex",
@@ -128,20 +153,28 @@ function Navbar({ cartCount = 0 }) {
           display: "flex", alignItems: "center", gap: "14px", flexShrink: 0,
         }}>
 
+          {/* Notification bell — now properly inline with cart, not a floating stray element */}
+          {user && (
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <NotificationBell />
+            </div>
+          )}
+
           {/* Cart */}
           {user && (
             <Link to="/cart" style={{
               position: "relative", textDecoration: "none",
               fontSize: "22px", color: "#3a1a00",
+              display: "flex", alignItems: "center",
             }}>
               🛒
               {cartCount > 0 && (
                 <span style={{
                   position: "absolute", top: "-7px", right: "-9px",
-                  background: "#e2632b", color: "#fff", borderRadius: "50%",
+                  background: "#c9521e", color: "#fff", borderRadius: "50%",
                   fontSize: "9px", fontWeight: "800", width: "16px", height: "16px",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  boxShadow: "0 2px 6px rgba(226,99,43,0.5)",
+                  boxShadow: "0 2px 6px rgba(201,82,30,0.5)",
                 }}>{cartCount}</span>
               )}
             </Link>
@@ -199,21 +232,11 @@ function Navbar({ cartCount = 0 }) {
           }}>{menuOpen ? "✕" : "☰"}</button>
         </div>
       </nav>
-      {/* Notification Bell */}
-{user && <NotificationBell />}
-
-{/* Mobile Menu Button */}
-<button
-  className="menu-toggle"
-  onClick={() => setMenuOpen(!menuOpen)}
->
-  ☰
-</button>
 
       {/* MOBILE DRAWER */}
       {menuOpen && (
         <div style={{
-          position: "fixed", inset: 0, background: "#0e0703",
+          position: "fixed", inset: 0, background: "#412402",
           zIndex: 1100, display: "flex", flexDirection: "column",
           padding: "72px 32px 32px", overflowY: "auto",
         }}>
