@@ -19,6 +19,17 @@ import chocolateBobbatlu from "../assets/products/chocolate-bobbatlu.png";
 import carrotBobbatlu from "../assets/products/carrot-bobbatlu.png";
 import sarvapindi from "../assets/products/sarvapindi.png";
 
+/* ── TERRACOTTA & CREAM PALETTE ──
+  page bg:        #FFF8ED
+  section alt bg: #FDF1DD
+  cards:          #FFFFFF
+  accent:         #D5652E  (terracotta)
+  accent hover:   #B5501F
+  heading text:   #3A2418  (deep maroon-brown)
+  body/muted:     #8B6F52
+  faint text:     #A88A68
+  borders:        rgba(58,36,24,.12)
+*/
 
 const FEATURES = [
   { icon: "🌿", title: "100% AUTHENTIC",               sub: "Traditional Telangana Recipes" },
@@ -51,28 +62,20 @@ export default function Home() {
   const user = JSON.parse(localStorage.getItem("user") || "null");
   const [cart, setCart]         = useState([]);
   const [wishlist, setWishlist] = useState([]);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const addToCart      = (item) => setCart((p) => [...p, item]);
   const toggleWishlist = (name) =>
     setWishlist((p) => p.includes(name) ? p.filter((n) => n !== name) : [...p, name]);
 
-  const scrollDown = () => window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+  const scrollTo = (id) => (e) => {
+    e.preventDefault();
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <div style={{ background: "#1a0d05", fontFamily: "'Segoe UI', sans-serif", overflowX: "hidden" }}>
-      
+    <div style={{ background: "#FFF8ED", fontFamily: "'Segoe UI', sans-serif", overflowX: "hidden" }}>
+
       <style>{`
-        @keyframes floatA {
-          0%,100% { transform: translateY(0); }
-          50%      { transform: translateY(-14px); }
-        }
         @keyframes shimmer {
           0%   { background-position: -200% center; }
           100% { background-position:  200% center; }
@@ -86,16 +89,15 @@ export default function Home() {
           50%      { transform:translateX(-50%) translateY(8px); }
         }
         .ts-card { transition:transform .25s,box-shadow .25s; cursor:pointer; }
-        .ts-card:hover { transform:translateY(-5px); box-shadow:0 14px 36px rgba(226,99,43,.28)!important; }
-        .ts-add:hover  { background:#c9521e!important; }
-        .ts-cta:hover  { background:#c9521e!important; transform:scale(1.03); }
+        .ts-card:hover { transform:translateY(-5px); box-shadow:0 14px 30px rgba(213,101,46,.18)!important; }
+        .ts-add:hover  { background:#B5501F!important; }
+        .ts-cta:hover  { background:#B5501F!important; transform:scale(1.03); }
         .ts-cta { transition:background .2s,transform .2s; }
         .ts-heart { transition:color .2s; }
-        .ts-heart:hover { color:#e2632b!important; }
+        .ts-heart:hover { color:#D5652E!important; }
         .img-zoom { transition:transform .45s ease; }
         .img-zoom:hover { transform:scale(1.06); }
 
-        /* ── RESPONSIVE ── */
         @media (max-width:768px) {
           .hero-section { height:auto!important; min-height:100vh!important; padding:100px 0 40px!important; }
           .hero-copy  { padding-left:20px!important; padding-right:20px!important; }
@@ -106,48 +108,43 @@ export default function Home() {
           .hero-callout { position:relative!important; right:auto!important; bottom:auto!important;
                            margin:24px auto 0!important; width:fit-content!important; }
           .features-strip { gap:0!important; flex-direction:column!important; }
-          .features-strip > div { border-right:none!important; border-bottom:1px solid rgba(255,255,255,.08)!important; width:100%!important; }
+          .features-strip > div { border-right:none!important; border-bottom:1px solid rgba(58,36,24,.1)!important; width:100%!important; }
           .about-section { padding:48px 24px!important; min-height:auto!important; }
           .about-grid { flex-direction:column!important; }
           .about-imgs { flex-direction:row!important; gap:10px!important; }
           .about-imgs img { height:140px!important; }
           .products-grid { grid-template-columns:repeat(2,1fr)!important; }
           .bestsellers-grid { grid-template-columns:repeat(2,1fr)!important; }
-          .footer-inner { flex-direction:column!important; text-align:center!important; gap:20px!important; }
-          .admin-bar { font-size:12px!important; padding:8px 16px!important; }
+          .footer-inner { flex-direction:column!important; text-align:center!important; gap:24px!important; }
+          .footer-inner > div { text-align:center!important; align-items:center!important; }
         }
         @media (max-width:480px) {
           .products-grid  { grid-template-columns:1fr!important; }
           .bestsellers-grid { grid-template-columns:1fr!important; }
         }
       `}</style>
-      
-    
-      <div className="hero-section" style={{
+
+      {/* ═══════════════════════════════════
+          HERO
+      ═══════════════════════════════════ */}
+      <div id="home" className="hero-section" style={{
         position: "relative",
         width: "100%",
         height: "100vh",
         minHeight: "560px",
         overflow: "hidden",
-        background: "linear-gradient(120deg,#110800 0%,#2a1208 55%,#110800 100%)",
+        background: "linear-gradient(120deg,#FFF8ED 0%,#FDECD2 55%,#FFF8ED 100%)",
         display: "flex",
         alignItems: "center",
         boxSizing: "border-box",
       }}>
 
-        {/* dot texture */}
         <div style={{
           position:"absolute",inset:0,zIndex:0,pointerEvents:"none",
-          backgroundImage:"radial-gradient(circle,rgba(226,99,43,.07) 1px,transparent 1px)",
+          backgroundImage:"radial-gradient(circle,rgba(213,101,46,.08) 1px,transparent 1px)",
           backgroundSize:"30px 30px",
         }}/>
-        {/* vignette */}
-        <div style={{
-          position:"absolute",inset:0,zIndex:0,pointerEvents:"none",
-          background:"radial-gradient(ellipse at center,transparent 38%,rgba(0,0,0,.6) 100%)",
-        }}/>
 
-        {/* ── CHARMINAR — shifted higher so spires peek above viewport ── */}
         <img
           src={charminar}
           alt="Charminar"
@@ -162,12 +159,10 @@ export default function Home() {
             objectFit: "contain",
             objectPosition: "top left",
             zIndex: 1,
-            opacity: 0.92,
-            filter: "sepia(.2) saturate(1.4) hue-rotate(-5deg)",
+            opacity: 0.85,
           }}
         />
 
-        {/* ── SARVAPINDI — right side, pushed to top, static, full coverage ── */}
         <img
           src={heroSarvapindi}
           alt="Sarvapindi"
@@ -181,12 +176,10 @@ export default function Home() {
             objectFit: "cover",
             objectPosition: "left center",
             zIndex: 1,
-            filter: "drop-shadow(-20px 0 40px rgba(0,0,0,.8))",
-            /* NO animation — static */
+            filter: "drop-shadow(-16px 0 30px rgba(58,36,24,.18))",
           }}
         />
 
-        {/* OUR SPECIALITY callout — bottom right */}
         <div className="hero-callout" style={{
           position: "absolute",
           right: "0%",
@@ -195,13 +188,13 @@ export default function Home() {
           animation: "fadeUp .8s ease .5s both",
         }}>
           <div style={{
-            background: "linear-gradient(135deg,#e2632b,#b84a1a)",
+            background: "#D5652E",
             padding: "10px 22px 16px",
             borderRadius: "6px 6px 38px 6px",
-            boxShadow: "0 8px 28px rgba(226,99,43,.45)",
+            boxShadow: "0 8px 24px rgba(213,101,46,.28)",
             textAlign: "right",
           }}>
-            <div style={{ color:"rgba(255,255,255,.7)", fontSize:"10px", letterSpacing:"2.5px", fontWeight:"700" }}>
+            <div style={{ color:"rgba(255,255,255,.8)", fontSize:"10px", letterSpacing:"2.5px", fontWeight:"700" }}>
               OUR SPECIALITY
             </div>
             <div style={{
@@ -212,21 +205,20 @@ export default function Home() {
               fontFamily: "Georgia,serif",
               lineHeight: "1.1",
             }}>Sarvapindi ♥</div>
-            <div style={{ color:"rgba(255,255,255,.8)", fontSize:"11px", marginTop:"3px" }}>
+            <div style={{ color:"rgba(255,255,255,.85)", fontSize:"11px", marginTop:"3px" }}>
               A Timeless Telangana Classic
             </div>
           </div>
         </div>
 
-        {/* ── CENTER-LEFT COPY — between charminar and food ── */}
         <div
           className="hero-copy"
           style={{
             position: "absolute",
             zIndex: 2,
             textAlign: "left",
-            left: "22%",          /* starts after charminar */
-            right: "31%",         /* ends before sarvapindi */
+            left: "22%",
+            right: "31%",
             top: "42%",
             transform: "translateY(-50%)",
             padding: "0 24px",
@@ -235,10 +227,10 @@ export default function Home() {
           }}
         >
           <div style={{
-            color: "#c9a87c",
+            color: "#B5501F",
             fontSize: "11px",
             letterSpacing: "3px",
-            fontWeight: "600",
+            fontWeight: "700",
             marginBottom: "14px",
           }}>
             AUTHENTIC STREET FOOD, MADE WITH LOVE ♥
@@ -247,7 +239,7 @@ export default function Home() {
           <h1 style={{
             margin: "0 0 2px",
             lineHeight: "1.05",
-            color: "#fff",
+            color: "#3A2418",
             fontWeight: "900",
             fontSize: "clamp(20px,3.2vw,46px)",
             textTransform: "uppercase",
@@ -261,7 +253,7 @@ export default function Home() {
             fontSize: "clamp(40px,7vw,90px)",
             fontStyle: "italic",
             fontFamily: "Georgia,serif",
-            background: "linear-gradient(90deg,#e2632b 0%,#f5973a 50%,#e2632b 100%)",
+            background: "linear-gradient(90deg,#D5652E 0%,#F0954D 50%,#D5652E 100%)",
             backgroundSize: "200% auto",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
@@ -270,19 +262,19 @@ export default function Home() {
             letterSpacing: "-1px",
           }}>TELANGANA</h1>
 
-          {/* location badge */}
           <div style={{
             display: "inline-flex",
             alignItems: "center",
-            gap: "27px",
-            background: "rgba(255,255,255,.07)",
-            border: "1px solid rgba(255,255,255,.14)",
+            gap: "16px",
+            background: "#fff",
+            border: "1px solid rgba(58,36,24,.1)",
             borderRadius: "12px",
             padding: "11px 18px",
             marginBottom: "30px",
+            boxShadow: "0 4px 16px rgba(58,36,24,.06)",
           }}>
             <div style={{
-              background: "#e2632b",
+              background: "#D5652E",
               borderRadius: "50%",
               width: "36px",
               height: "36px",
@@ -293,19 +285,19 @@ export default function Home() {
               fontSize: "18px",
             }}>📍</div>
             <div style={{ textAlign: "left" }}>
-              <div style={{ color:"#fff", fontWeight:"700", fontSize:"13px" }}>
+              <div style={{ color:"#3A2418", fontWeight:"700", fontSize:"13px" }}>
                 NEAR HITECH CITY, MADHAPUR METRO 🚇
               </div>
-              <div style={{ color:"#c9a87c", fontSize:"11px" }}>Easy to reach. Impossible to forget!</div>
+              <div style={{ color:"#8B6F52", fontSize:"11px" }}>Easy to reach. Impossible to forget!</div>
             </div>
           </div>
 
           <br/>
-          <Link to="/products" className="ts-cta" style={{
+          <a href="#menu" onClick={scrollTo("menu")} className="ts-cta" style={{
             display: "inline-flex",
             alignItems: "center",
             gap: "10px",
-            background: "#e2632b",
+            background: "#D5652E",
             color: "#fff",
             padding: "15px 38px",
             borderRadius: "8px",
@@ -313,21 +305,20 @@ export default function Home() {
             fontSize: "14px",
             textDecoration: "none",
             letterSpacing: "1px",
-            boxShadow: "0 8px 30px rgba(226,99,43,.45)",
-          }}>EXPLORE OUR MENU →</Link>
+            boxShadow: "0 8px 24px rgba(213,101,46,.3)",
+          }}>EXPLORE OUR MENU →</a>
         </div>
 
-        {/* SCROLL DOWN button */}
-        <button onClick={scrollDown} style={{
+        <a href="#about" onClick={scrollTo("about")} style={{
           position: "absolute",
           bottom: "28px",
           left: "50%",
           transform: "translateX(-50%)",
-          background: "transparent",
-          border: "2px solid rgba(226,99,43,.5)",
+          background: "#fff",
+          border: "1px solid rgba(58,36,24,.12)",
           borderRadius: "30px",
           padding: "10px 20px",
-          color: "#e2632b",
+          color: "#D5652E",
           fontSize: "12px",
           fontWeight: "700",
           letterSpacing: "2px",
@@ -338,18 +329,18 @@ export default function Home() {
           alignItems: "center",
           gap: "4px",
           animation: "bounce 2s ease-in-out infinite",
-          backdropFilter: "blur(4px)",
+          textDecoration: "none",
         }}>
           SCROLL DOWN
           <span style={{ fontSize:"16px", lineHeight:"1" }}>↓</span>
-        </button>
+        </a>
       </div>
 
       {/* FEATURES STRIP */}
       <div className="features-strip" style={{
-        background: "#0d0703",
-        borderTop: "1px solid rgba(226,99,43,.25)",
-        borderBottom: "1px solid rgba(226,99,43,.25)",
+        background: "#FDF1DD",
+        borderTop: "1px solid rgba(58,36,24,.08)",
+        borderBottom: "1px solid rgba(58,36,24,.08)",
         padding: "18px 32px",
         display: "flex",
         justifyContent: "center",
@@ -363,12 +354,12 @@ export default function Home() {
               alignItems: "center",
               gap: "10px",
               padding: "10px 24px",
-              borderRight: i < FEATURES.length-1 ? "1px solid rgba(255,255,255,.09)" : "none",
+              borderRight: i < FEATURES.length-1 ? "1px solid rgba(58,36,24,.1)" : "none",
             }}>
               <span style={{ fontSize:"20px" }}>{f.icon}</span>
               <div>
-                <div style={{ color:"#e2632b", fontWeight:"700", fontSize:"10px", letterSpacing:".5px" }}>{f.title}</div>
-                <div style={{ color:"#7a6858", fontSize:"10px" }}>{f.sub}</div>
+                <div style={{ color:"#D5652E", fontWeight:"700", fontSize:"10px", letterSpacing:".5px" }}>{f.title}</div>
+                <div style={{ color:"#A88A68", fontSize:"10px" }}>{f.sub}</div>
               </div>
             </div>
           </div>
@@ -376,10 +367,10 @@ export default function Home() {
       </div>
 
       {/* ═══════════════════════════════════
-          PAGE 2 — ABOUT / DESCRIPTION
+          ABOUT
       ═══════════════════════════════════ */}
-      <div className="about-section" style={{
-        background:"#110800",
+      <div id="about" className="about-section" style={{
+        background:"#FFF8ED",
         padding:"80px 64px",
         minHeight:"100vh",
         display:"flex",alignItems:"center",
@@ -393,37 +384,35 @@ export default function Home() {
           flexWrap: "wrap",
         }}>
 
-          {/* LEFT — text */}
           <div style={{ flex:"1 1 320px", maxWidth:"500px" }}>
-            <div style={{ color:"#e2632b", fontSize:"11px", letterSpacing:"3px", fontWeight:"700", marginBottom:"14px" }}>
+            <div style={{ color:"#D5652E", fontSize:"11px", letterSpacing:"3px", fontWeight:"700", marginBottom:"14px" }}>
               WHO WE ARE
             </div>
             <h2 style={{
-              color: "#fff",
+              color: "#3A2418",
               fontWeight: "900",
               fontSize: "clamp(26px,3.5vw,46px)",
               lineHeight: "1.1",
               margin: "0 0 20px",
             }}>
               Straight from the{" "}
-              <span style={{ color:"#e2632b", fontStyle:"italic", fontFamily:"Georgia,serif" }}>
+              <span style={{ color:"#D5652E", fontStyle:"italic", fontFamily:"Georgia,serif" }}>
                 Streets of Telangana
               </span>
             </h2>
-            <div style={{ width:"48px", height:"3px", background:"#e2632b", borderRadius:"2px", marginBottom:"24px" }}/>
-            <p style={{ color:"#9a8470", fontSize:"15px", lineHeight:"1.9", margin:"0 0 16px" }}>
+            <div style={{ width:"48px", height:"3px", background:"#D5652E", borderRadius:"2px", marginBottom:"24px" }}/>
+            <p style={{ color:"#8B6F52", fontSize:"15px", lineHeight:"1.9", margin:"0 0 16px" }}>
               Telangana Special brings you the authentic taste of Telangana's rich culinary heritage.
-              From the crispy <strong style={{ color:"#e2632b" }}>Sarvapindi</strong> made with rice flour
-              and peanuts, to the melt-in-your-mouth <strong style={{ color:"#e2632b" }}>Bobbatlu</strong>
+              From the crispy <strong style={{ color:"#D5652E" }}>Sarvapindi</strong> made with rice flour
+              and peanuts, to the melt-in-your-mouth <strong style={{ color:"#D5652E" }}>Bobbatlu</strong>
               — every bite carries decades of tradition.
             </p>
-            <p style={{ color:"#9a8470", fontSize:"15px", lineHeight:"1.9", margin:"0 0 30px" }}>
-              Located near <strong style={{ color:"#c9a87c" }}>Hitech City, Madhapur Metro</strong>,
+            <p style={{ color:"#8B6F52", fontSize:"15px", lineHeight:"1.9", margin:"0 0 30px" }}>
+              Located near <strong style={{ color:"#3A2418" }}>Hitech City, Madhapur Metro</strong>,
               we make everything fresh every single day — no preservatives, no shortcuts.
               Just pure love and traditional recipes passed down through generations.
             </p>
 
-            {/* Stats */}
             <div style={{ display:"flex", gap:"36px", flexWrap:"wrap", marginBottom:"36px" }}>
               {[
                 { num:"8+",   label:"Signature Dishes" },
@@ -431,39 +420,36 @@ export default function Home() {
                 { num:"500+", label:"Happy Customers" },
               ].map((s,i) => (
                 <div key={i}>
-                  <div style={{ color:"#e2632b", fontSize:"30px", fontWeight:"900", lineHeight:"1" }}>{s.num}</div>
-                  <div style={{ color:"#7a6858", fontSize:"12px", marginTop:"4px" }}>{s.label}</div>
+                  <div style={{ color:"#D5652E", fontSize:"30px", fontWeight:"900", lineHeight:"1" }}>{s.num}</div>
+                  <div style={{ color:"#A88A68", fontSize:"12px", marginTop:"4px" }}>{s.label}</div>
                 </div>
               ))}
             </div>
 
-            <Link to="/products" className="ts-cta" style={{
+            <a href="#menu" onClick={scrollTo("menu")} className="ts-cta" style={{
               display: "inline-flex",
               alignItems: "center",
               gap: "8px",
-              background: "#e2632b",
+              background: "#D5652E",
               color: "#fff",
               padding: "13px 30px",
               borderRadius: "8px",
               fontWeight: "700",
               fontSize: "13px",
               textDecoration: "none",
-              boxShadow: "0 6px 22px rgba(226,99,43,.35)",
-            }}>ORDER NOW →</Link>
+              boxShadow: "0 6px 20px rgba(213,101,46,.25)",
+            }}>ORDER NOW →</a>
           </div>
 
-          {/* RIGHT — single image (Sarvapindi) */}
           <div style={{ flex:"1 1 280px", display:"flex", flexDirection:"column", gap:"16px" }}>
-
-            {/* ── ONE image only ── */}
             <div
               className="about-img-wrap"
               style={{
                 borderRadius: "16px",
                 overflow: "hidden",
-                border: "2px solid rgba(226,99,43,.25)",
-                boxShadow: "0 10px 36px rgba(0,0,0,.5)",
-                height: "460px",         /* taller since it's the only image */
+                border: "1px solid rgba(58,36,24,.1)",
+                boxShadow: "0 10px 30px rgba(58,36,24,.1)",
+                height: "460px",
               }}
             >
               <img
@@ -474,20 +460,19 @@ export default function Home() {
                   width: "100%",
                   height: "100%",
                   objectFit: "cover",
-                  objectPosition: "left center",   /* shows the basket + spice-bowl side */
+                  objectPosition: "left center",
                 }}
               />
             </div>
 
-            {/* floating badge below image */}
             <div style={{
-              background: "#e2632b",
+              background: "#D5652E",
               padding: "12px 20px",
               borderRadius: "12px",
               textAlign: "center",
-              boxShadow: "0 6px 20px rgba(226,99,43,.4)",
+              boxShadow: "0 6px 18px rgba(213,101,46,.25)",
             }}>
-              <div style={{ color:"rgba(255,255,255,.8)", fontSize:"10px", letterSpacing:"2px" }}>VISIT US</div>
+              <div style={{ color:"rgba(255,255,255,.85)", fontSize:"10px", letterSpacing:"2px" }}>VISIT US</div>
               <div style={{
                 color: "#fff",
                 fontWeight: "800",
@@ -504,16 +489,14 @@ export default function Home() {
       </div>
 
       {/* ═══════════════════════════════════
-          PAGE 3 — SPECIALITIES + BESTSELLERS
+          SPECIALITIES + BESTSELLERS (id="menu")
       ═══════════════════════════════════ */}
-
-      {/* Our Specialities */}
-      <div style={{ background:"#130a03", padding:"72px 48px", minHeight:"auto" }}>
+      <div id="menu" style={{ background:"#FDF1DD", padding:"72px 48px", minHeight:"auto" }}>
         <div style={{ textAlign:"center", marginBottom:"44px" }}>
-          <div style={{ color:"#e2632b", fontSize:"11px", letterSpacing:"3px", fontWeight:"700", marginBottom:"8px" }}>
+          <div style={{ color:"#D5652E", fontSize:"11px", letterSpacing:"3px", fontWeight:"700", marginBottom:"8px" }}>
             STRAIGHT FROM THE STREETS OF TELANGANA
           </div>
-          <h2 style={{ color:"#fff", fontWeight:"900", fontSize:"clamp(24px,3vw,38px)", margin:0 }}>
+          <h2 style={{ color:"#3A2418", fontWeight:"900", fontSize:"clamp(24px,3vw,38px)", margin:0 }}>
             Our Specialities
           </h2>
         </div>
@@ -525,11 +508,11 @@ export default function Home() {
         }}>
           {SPECIALITY_PRODUCTS.map((item,i) => (
             <div key={i} className="ts-card" style={{
-              background: "#1e1008",
+              background: "#fff",
               borderRadius: "16px",
               overflow: "hidden",
-              border: item.specialty ? "2px solid #e2632b" : "1px solid rgba(255,255,255,.07)",
-              boxShadow: item.specialty ? "0 8px 30px rgba(226,99,43,.22)" : "0 2px 12px rgba(0,0,0,.35)",
+              border: item.specialty ? "2px solid #D5652E" : "1px solid rgba(58,36,24,.08)",
+              boxShadow: item.specialty ? "0 8px 24px rgba(213,101,46,.15)" : "0 2px 10px rgba(58,36,24,.06)",
               position: "relative",
             }}>
               {item.specialty && (
@@ -538,7 +521,7 @@ export default function Home() {
                   top: "12px",
                   left: "50%",
                   transform: "translateX(-50%)",
-                  background: "#e2632b",
+                  background: "#D5652E",
                   color: "#fff",
                   fontSize: "9px",
                   fontWeight: "800",
@@ -549,25 +532,25 @@ export default function Home() {
                   whiteSpace: "nowrap",
                 }}>OUR SPECIALITY</div>
               )}
-              <div style={{ width:"100%", height:"180px", overflow:"hidden", background:"#2a1510" }}>
+              <div style={{ width:"100%", height:"180px", overflow:"hidden", background:"#FDF1DD" }}>
                 <img src={item.image} alt={item.name}
                   className="img-zoom"
                   style={{ width:"100%", height:"100%", objectFit:"cover" }}
                 />
               </div>
               <div style={{ padding:"14px 16px 16px" }}>
-                <div style={{ color:"#fff", fontWeight:"700", fontSize:"14px", marginBottom:"4px" }}>{item.name}</div>
-                <div style={{ color:"#7a6858", fontSize:"11px", marginBottom:"12px" }}>{item.tagline}</div>
+                <div style={{ color:"#3A2418", fontWeight:"700", fontSize:"14px", marginBottom:"4px" }}>{item.name}</div>
+                <div style={{ color:"#A88A68", fontSize:"11px", marginBottom:"12px" }}>{item.tagline}</div>
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-                  <Link to="/products" style={{ color:"#e2632b", fontSize:"12px", fontWeight:"700", textDecoration:"none" }}>
+                  <a href="#menu" onClick={scrollTo("menu")} style={{ color:"#D5652E", fontSize:"12px", fontWeight:"700", textDecoration:"none" }}>
                     Order Now →
-                  </Link>
+                  </a>
                   <button className="ts-heart" onClick={() => toggleWishlist(item.name)} style={{
                     background: "transparent",
                     border: "none",
                     cursor: "pointer",
                     fontSize: "18px",
-                    color: wishlist.includes(item.name) ? "#e2632b" : "#3a2a1a",
+                    color: wishlist.includes(item.name) ? "#D5652E" : "#D9C6AC",
                   }}>♥</button>
                 </div>
               </div>
@@ -576,8 +559,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Best Sellers */}
-      <div style={{ padding:"72px 48px", background:"#1a0d05" }}>
+      <div style={{ padding:"72px 48px", background:"#FFF8ED" }}>
         <div style={{
           display: "flex",
           justifyContent: "space-between",
@@ -587,14 +569,11 @@ export default function Home() {
           gap: "12px",
         }}>
           <div>
-            <div style={{ color:"#e2632b", fontWeight:"700", fontSize:"11px", letterSpacing:"2px" }}>OUR FAVOURITES</div>
-            <h2 style={{ fontSize:"clamp(22px,3vw,34px)", fontWeight:"900", color:"#fff", margin:"4px 0 0" }}>
+            <div style={{ color:"#D5652E", fontWeight:"700", fontSize:"11px", letterSpacing:"2px" }}>OUR FAVOURITES</div>
+            <h2 style={{ fontSize:"clamp(22px,3vw,34px)", fontWeight:"900", color:"#3A2418", margin:"4px 0 0" }}>
               BEST SELLERS
             </h2>
           </div>
-          <Link to="/products" style={{ color:"#e2632b", fontWeight:"700", fontSize:"13px", textDecoration:"none" }}>
-            VIEW ALL MENU →
-          </Link>
         </div>
 
         <div className="bestsellers-grid" style={{
@@ -604,24 +583,24 @@ export default function Home() {
         }}>
           {BEST_SELLERS.map((item,i) => (
             <div key={i} className="ts-card" style={{
-              background: "#1e1008",
+              background: "#fff",
               borderRadius: "14px",
               overflow: "hidden",
-              border: "1px solid rgba(255,255,255,.07)",
-              boxShadow: "0 2px 12px rgba(0,0,0,.35)",
+              border: "1px solid rgba(58,36,24,.08)",
+              boxShadow: "0 2px 10px rgba(58,36,24,.06)",
             }}>
-              <div style={{ width:"100%", height:"148px", overflow:"hidden", background:"#2a1510" }}>
+              <div style={{ width:"100%", height:"148px", overflow:"hidden", background:"#FDF1DD" }}>
                 <img src={item.image} alt={item.name}
                   className="img-zoom"
                   style={{ width:"100%", height:"100%", objectFit:"cover" }}
                 />
               </div>
               <div style={{ padding:"12px 14px" }}>
-                <div style={{ fontWeight:"700", fontSize:"14px", color:"#fff", marginBottom:"8px" }}>{item.name}</div>
+                <div style={{ fontWeight:"700", fontSize:"14px", color:"#3A2418", marginBottom:"8px" }}>{item.name}</div>
                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-                  <span style={{ fontWeight:"800", fontSize:"15px", color:"#e2632b" }}>₹{item.price}</span>
+                  <span style={{ fontWeight:"800", fontSize:"15px", color:"#D5652E" }}>₹{item.price}</span>
                   <button className="ts-add" onClick={() => addToCart(item)} style={{
-                    background: "#e2632b",
+                    background: "#D5652E",
                     color: "#fff",
                     border: "none",
                     borderRadius: "8px",
@@ -639,21 +618,19 @@ export default function Home() {
       </div>
 
       {/* ═══════════════════════════════════
-          FOOTER
+          FOOTER (id="visit")
       ═══════════════════════════════════ */}
-      <footer style={{ background:"#e2632b", position:"relative", overflow:"hidden" }}>
+      <footer id="visit" style={{ background:"#D5652E", position:"relative", overflow:"hidden" }}>
 
-        {/* Top footer */}
         <div className="footer-inner" style={{
           padding: "32px 48px",
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-start",
           justifyContent: "space-between",
           flexWrap: "wrap",
-          gap: "20px",
+          gap: "28px",
           borderBottom: "1px solid rgba(255,255,255,.2)",
         }}>
-          {/* Charminar watermark */}
           <div style={{
             position: "absolute",
             right: "120px",
@@ -667,12 +644,22 @@ export default function Home() {
             letterSpacing: "-10px",
           }}>🏛️🏛️🏛️</div>
 
-          <div style={{ display:"flex", alignItems:"center", gap:"14px", zIndex:1 }}>
-            <div style={{ background:"rgba(255,255,255,.2)", borderRadius:"10px", padding:"10px 12px", fontSize:"24px" }}>🏪</div>
-            <div>
-              <div style={{ color:"rgba(255,255,255,.7)", fontSize:"10px", letterSpacing:"1.5px", marginBottom:"2px" }}>VISIT US NEAR</div>
-              <div style={{ color:"#fff", fontWeight:"800", fontSize:"15px" }}>Hitech City, Madhapur Metro</div>
-              <div style={{ color:"rgba(255,255,255,.85)", fontSize:"12px" }}>Easy to reach. Impossible to forget!</div>
+          <div style={{ zIndex:1, maxWidth:"340px" }}>
+            <div style={{ color:"rgba(255,255,255,.75)", fontSize:"10px", letterSpacing:"1.5px", marginBottom:"6px" }}>
+              VISIT US
+            </div>
+            <div style={{ color:"#fff", fontWeight:"800", fontSize:"14px", lineHeight:"1.6" }}>
+              Near Huda Techno Enclave, Madhapur,<br/>
+              Near Hitech City, Near Ratnadeep Super Market,<br/>
+              Hyderabad, Telangana - 500081
+            </div>
+
+            <div style={{ color:"rgba(255,255,255,.75)", fontSize:"10px", letterSpacing:"1.5px", marginTop:"16px", marginBottom:"6px" }}>
+              TIMINGS
+            </div>
+            <div style={{ color:"#fff", fontWeight:"600", fontSize:"13px", lineHeight:"1.6" }}>
+              Mon - Sat: 8:00 PM - 12:30 AM<br/>
+              Sunday: 7:00 PM - 12:30 AM
             </div>
           </div>
 
@@ -684,23 +671,27 @@ export default function Home() {
             fontWeight: "700",
             fontStyle: "italic",
             fontFamily: "Georgia,serif",
+            alignSelf: "center",
           }}>
             Taste Telangana, Feel at Home. ♡
           </div>
 
-          <div style={{ display:"flex", alignItems:"center", gap:"16px", zIndex:1 }}>
-            <div>
-              <div style={{ color:"rgba(255,255,255,.7)", fontSize:"10px", letterSpacing:"1.5px", marginBottom:"2px" }}>ORDER AVAILABLE</div>
-              <div style={{ color:"#fff", fontWeight:"800", fontSize:"14px" }}>Dine-in & Takeaway</div>
+          <div style={{ zIndex:1, maxWidth:"280px", textAlign:"right" }}>
+            <div style={{ color:"rgba(255,255,255,.75)", fontSize:"10px", letterSpacing:"1.5px", marginBottom:"6px" }}>
+              BULK ORDERS
             </div>
-            <div style={{ background:"rgba(255,255,255,.2)", borderRadius:"10px", padding:"10px 12px", fontSize:"24px" }}>🛍️</div>
-            
+            <div style={{ color:"#fff", fontWeight:"600", fontSize:"13px", lineHeight:"1.6" }}>
+              We prepare bulk & party orders fresh at home<br/>
+              and deliver straight to your door.
+            </div>
+            <div style={{ color:"#fff", fontWeight:"800", fontSize:"14px", marginTop:"10px" }}>
+              📞 +91 98765 43210
+            </div>
           </div>
         </div>
 
-        {/* Bottom footer strip */}
         <div style={{
-          background: "rgba(0,0,0,.2)",
+          background: "rgba(0,0,0,.15)",
           padding: "14px 48px",
           display: "flex",
           alignItems: "center",
@@ -708,12 +699,12 @@ export default function Home() {
           flexWrap: "wrap",
           gap: "8px",
         }}>
-          <div style={{ color:"rgba(255,255,255,.7)", fontSize:"12px" }}>
+          <div style={{ color:"rgba(255,255,255,.75)", fontSize:"12px" }}>
             © 2026 Telangana Special. All rights reserved.
           </div>
           <div style={{ display:"flex", gap:"20px" }}>
             {["Privacy Policy","Terms of Service","Contact Us"].map((l,i) => (
-              <span key={i} style={{ color:"rgba(255,255,255,.7)", fontSize:"12px", cursor:"pointer" }}>
+              <span key={i} style={{ color:"rgba(255,255,255,.75)", fontSize:"12px", cursor:"pointer" }}>
                 {l}
               </span>
             ))}

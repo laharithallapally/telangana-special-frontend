@@ -141,9 +141,10 @@ function NotificationBell() {
 
       {toast && (
         <div className="notif-toast">
-          <span className="notif-toast-text">
-            🎉 Hey {user.name}! {toast}
-          </span>
+          <div className="notif-toast-body">
+            <span className="notif-toast-sender">Telangana Special</span>
+            <span className="notif-toast-text">{toast}</span>
+          </div>
           <button className="notif-toast-close" onClick={closeToast}>
             ×
           </button>
