@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import NotificationBell from "./NotificationBell";
+
 const NAV_LINKS = [
   { to: "/home",      label: "Home" },
   { to: "/products",  label: "Menu" },
@@ -67,32 +68,59 @@ function Navbar({ cartCount = 0 }) {
         .ts-order-btn { transition: background 0.2s, transform 0.15s; }
         .ts-order-btn:hover { background: #c9521e !important; transform: scale(1.03); }
 
+        .ts-utility-bar {
+          background: #faeeda;
+          border-bottom: 1px solid rgba(201,82,30,0.12);
+          padding: 7px 40px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 6px;
+          font-size: 12px;
+          position: sticky;
+          top: 0;
+          z-index: 1001;
+        }
+
         @media (max-width: 900px) {
           .ts-desktop-links { display: none !important; }
           .ts-hamburger      { display: flex   !important; }
           .ts-desktop-right  { gap: 8px !important; }
           .ts-order-text     { display: none   !important; }
+
+          /* Nav no longer sticky on mobile — utility bar above it wraps to
+             a variable height, so a hardcoded sticky "top" offset breaks. 
+             Letting nav sit in normal document flow avoids the overlap/gap. */
+          .ts-nav {
+            position: static !important;
+            top: auto !important;
+            height: auto !important;
+            min-height: 60px !important;
+            padding: 10px 16px !important;
+            flex-wrap: wrap !important;
+          }
         }
+
+        @media (max-width: 480px) {
+          .ts-utility-bar {
+            padding: 6px 16px;
+            font-size: 11px;
+            justify-content: center;
+            text-align: center;
+          }
+          .ts-utility-bar span {
+            display: none; /* hide the long promo text on very small screens, keep phone number */
+          }
+        }
+
         @media (min-width: 901px) {
           .ts-hamburger { display: none !important; }
         }
       `}</style>
 
       {/* UTILITY BAR — contact + bulk orders */}
-      <div style={{
-        background: "#faeeda",
-        borderBottom: "1px solid rgba(201,82,30,0.12)",
-        padding: "7px 40px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        flexWrap: "wrap",
-        gap: "6px",
-        fontSize: "12px",
-        position: "sticky",
-        top: 0,
-        zIndex: 1001,
-      }}>
+      <div className="ts-utility-bar">
         <a href="tel:+919876543210" style={{
           color: "#854f0b", fontWeight: "600", textDecoration: "none",
           display: "flex", alignItems: "center", gap: "6px",
@@ -153,7 +181,7 @@ function Navbar({ cartCount = 0 }) {
           display: "flex", alignItems: "center", gap: "14px", flexShrink: 0,
         }}>
 
-          {/* Notification bell — now properly inline with cart, not a floating stray element */}
+          {/* Notification bell */}
           {user && (
             <div style={{ display: "flex", alignItems: "center" }}>
               <NotificationBell />

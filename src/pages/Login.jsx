@@ -25,10 +25,10 @@ function Login() {
     setLoading(true);
 
     try {
-const response = await api.post("/auth/login", {
-  email: formData.email.trim(),
-  password: formData.password.trim()
-});
+      const response = await api.post("/auth/login", {
+        email: formData.email.trim(),
+        password: formData.password.trim()
+      });
       // save token separately for axios interceptor
       localStorage.setItem("token", response.data.token);
 
@@ -44,16 +44,31 @@ const response = await api.post("/auth/login", {
       navigate("/home");
 
     } catch (error) {
-  console.log("Status:", error.response?.status);
-  console.log("Response Data:", error.response?.data);
-  console.error(error);
+      console.log("Status:", error.response?.status);
+      console.log("Response Data:", error.response?.data);
+      console.error(error);
 
-  setMessage("❌ Invalid Email or Password");
-}
+      setMessage("❌ Invalid Email or Password");
+    }
   };
 
   return (
     <div className="auth-wrapper">
+      <style>{`
+        @media (max-width: 768px) {
+          .auth-wrapper {
+            min-height: auto !important;
+            align-items: flex-start !important;
+            padding: 40px 16px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .auth-wrapper {
+            padding: 24px 12px !important;
+          }
+        }
+      `}</style>
+
       <div className="auth-container">
         <h2>Welcome Back 👋</h2>
 
