@@ -100,7 +100,18 @@ export default function Home() {
 
         @media (max-width:768px) {
           .hero-section { height:auto!important; min-height:100vh!important; padding:100px 0 40px!important; }
-          .hero-copy  { padding-left:20px!important; padding-right:20px!important; }
+          .hero-copy {
+            position: relative!important;
+            left: auto!important;
+            right: auto!important;
+            top: auto!important;
+            transform: none!important;
+            width: 100%!important;
+            padding-left: 20px!important;
+            padding-right: 20px!important;
+            box-sizing: border-box!important;
+            margin-top: 20px!important;
+          }
           .hero-charminar { display:none!important; width:0!important; height:0!important; }
           .hero-food  { display:block!important; width:88%!important; max-width:340px!important;
                         position:relative!important; margin:24px auto 0!important;
