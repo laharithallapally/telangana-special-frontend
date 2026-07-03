@@ -89,8 +89,15 @@ function Navbar({ cartCount = 0 }) {
           .ts-desktop-right  { gap: 8px !important; }
           .ts-order-text     { display: none   !important; }
 
+          /* Hide right-side icons/buttons (bell, cart, admin, order now,
+             login/register/logout) on mobile — they already live inside
+             the mobile drawer, so showing them in the top bar too is what
+             was causing the overflow/misalignment. Only logo + hamburger
+             remain in the top row on small screens. */
+          .ts-hide-mobile { display: none !important; }
+
           /* Nav no longer sticky on mobile — utility bar above it wraps to
-             a variable height, so a hardcoded sticky "top" offset breaks. 
+             a variable height, so a hardcoded sticky "top" offset breaks.
              Letting nav sit in normal document flow avoids the overlap/gap. */
           .ts-nav {
             position: static !important;
@@ -183,14 +190,14 @@ function Navbar({ cartCount = 0 }) {
 
           {/* Notification bell */}
           {user && (
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div className="ts-hide-mobile" style={{ display: "flex", alignItems: "center" }}>
               <NotificationBell />
             </div>
           )}
 
           {/* Cart */}
           {user && (
-            <Link to="/cart" style={{
+            <Link to="/cart" className="ts-hide-mobile" style={{
               position: "relative", textDecoration: "none",
               fontSize: "22px", color: "#3a1a00",
               display: "flex", alignItems: "center",
@@ -210,7 +217,7 @@ function Navbar({ cartCount = 0 }) {
 
           {!user ? (
             <>
-              <Link to="/" style={{
+              <Link to="/" className="ts-hide-mobile" style={{
                 color: "#3a1a00", fontWeight: "600", fontSize: "13px",
                 textDecoration: "none", border: "1.5px solid #3a1a00",
                 padding: "7px 18px", borderRadius: "6px", transition: "all 0.2s",
@@ -219,7 +226,7 @@ function Navbar({ cartCount = 0 }) {
                 onMouseLeave={e => { e.target.style.background="transparent"; e.target.style.color="#3a1a00"; }}
               >Login</Link>
 
-              <Link to="/register" className="ts-order-btn" style={{
+              <Link to="/register" className="ts-order-btn ts-hide-mobile" style={{
                 background: "#e2632b", color: "#fff", padding: "8px 18px",
                 borderRadius: "6px", fontWeight: "700", fontSize: "13px",
                 textDecoration: "none", letterSpacing: "0.3px",
@@ -228,20 +235,20 @@ function Navbar({ cartCount = 0 }) {
           ) : (
             <>
               {user.role === "ADMIN" && (
-                <Link to="/admin" style={{
+                <Link to="/admin" className="ts-hide-mobile" style={{
                   background: "#3a1a00", color: "#fff", padding: "7px 14px",
                   borderRadius: "6px", fontSize: "12px", fontWeight: "700",
                   textDecoration: "none", display: "flex", alignItems: "center", gap: "5px",
                 }}>⚙️ <span className="ts-order-text">Admin</span></Link>
               )}
 
-              <Link to="/products" className="ts-order-btn" style={{
+              <Link to="/products" className="ts-order-btn ts-hide-mobile" style={{
                 background: "#e2632b", color: "#fff", padding: "8px 18px",
                 borderRadius: "6px", fontWeight: "700", fontSize: "13px",
                 textDecoration: "none", letterSpacing: "0.3px", whiteSpace: "nowrap",
               }}>ORDER NOW →</Link>
 
-              <button onClick={handleLogout} style={{
+              <button onClick={handleLogout} className="ts-hide-mobile" style={{
                 background: "none", border: "1.5px solid rgba(226,99,43,0.4)",
                 color: "#e2632b", borderRadius: "6px", padding: "7px 14px",
                 fontSize: "12px", fontWeight: "600", cursor: "pointer",
