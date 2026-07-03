@@ -17,9 +17,16 @@ function Register() {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    let { name, value } = e.target;
+
+    // phone: strip non-digits and hard-cap at 10 characters
+    if (name === "phone") {
+      value = value.replace(/\D/g, "").slice(0, 10);
+    }
+
+    setFormData({ ...formData, [name]: value });
     // clear error when user starts typing
-    setErrors({ ...errors, [e.target.name]: "" });
+    setErrors({ ...errors, [name]: "" });
   };
 
   // frontend validation before sending to backend
@@ -47,12 +54,13 @@ function Register() {
 
     setLoading(true);
     try {
- const response = await api.post("/auth/register", {
-  ...formData,
-  email: formData.email.trim(),
-  name: formData.name.trim(),
-  phone: formData.phone.trim()
-});      // save token and redirect to products
+      const response = await api.post("/auth/register", {
+        ...formData,
+        email: formData.email.trim(),
+        name: formData.name.trim(),
+        phone: formData.phone.trim()
+      });
+      // save token and redirect to products
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data));
       setMessage("✅ Registration successful! Redirecting...");
@@ -66,66 +74,85 @@ function Register() {
   };
 
   return (
-    <div className="auth-container">
-      <h2>Create Account</h2>
+    <div className="auth-wrapper">
+      <style>{`
+        @media (max-width: 768px) {
+          .auth-wrapper {
+            min-height: auto !important;
+            align-items: flex-start !important;
+            padding: 40px 16px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .auth-wrapper {
+            padding: 24px 12px !important;
+          }
+        }
+      `}</style>
 
-      {message && (
-        <p className={message.includes("✅") ? "success-msg" : "error-msg"}>
-          {message}
-        </p>
-      )}
+      <div className="auth-container">
+        <h2>Create Account</h2>
 
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            onChange={handleChange}
-            value={formData.name}
-          />
-          {errors.name && <span className="field-error">{errors.name}</span>}
-        </div>
+        {message && (
+          <p className={message.includes("✅") ? "success-msg" : "error-msg"}>
+            {message}
+          </p>
+        )}
 
-        <div className="form-group">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-            value={formData.email}
-          />
-          {errors.email && <span className="field-error">{errors.email}</span>}
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              onChange={handleChange}
+              value={formData.name}
+            />
+            {errors.name && <span className="field-error">{errors.name}</span>}
+          </div>
 
-        <div className="form-group">
-          <input
-            type="password"
-            name="password"
-            placeholder="Password (min 6 characters)"
-            onChange={handleChange}
-            value={formData.password}
-          />
-          {errors.password && <span className="field-error">{errors.password}</span>}
-        </div>
+          <div className="form-group">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              onChange={handleChange}
+              value={formData.email}
+            />
+            {errors.email && <span className="field-error">{errors.email}</span>}
+          </div>
 
-        <div className="form-group">
-          <input
-            type="text"
-            name="phone"
-            placeholder="Phone (10 digits)"
-            onChange={handleChange}
-            value={formData.phone}
-          />
-          {errors.phone && <span className="field-error">{errors.phone}</span>}
-        </div>
+          <div className="form-group">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password (min 6 characters)"
+              onChange={handleChange}
+              value={formData.password}
+            />
+            {errors.password && <span className="field-error">{errors.password}</span>}
+          </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Registering..." : "Register"}
-        </button>
-      </form>
+          <div className="form-group">
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Phone (10 digits)"
+              onChange={handleChange}
+              value={formData.phone}
+              maxLength={10}
+              inputMode="numeric"
+            />
+            {errors.phone && <span className="field-error">{errors.phone}</span>}
+          </div>
 
-      <p>Already have an account? <a href="/">Login</a></p>
+          <button type="submit" disabled={loading}>
+            {loading ? "Registering..." : "Register"}
+          </button>
+        </form>
+
+        <p>Already have an account? <a href="/">Login</a></p>
+      </div>
     </div>
   );
 }
