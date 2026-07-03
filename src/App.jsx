@@ -18,6 +18,8 @@ import AdminOrders from "./pages/AdminOrders";
 import ManageProducts from "./pages/ManageProducts";
 import AdminDashboard from "./pages/AdminDashboard";
 
+import './App.css';
+
 function App() {
   return (
     <>
