@@ -106,10 +106,15 @@ function Login() {
           </button>
         </form>
 
+         <p style={{ marginTop: "4px" }}>
+          <Link to="/forgot-password">Forgot password?</Link>
+        </p>
+
         <p>
           Don't have an account?{" "}
           <Link to="/register">Register</Link>
         </p>
+
       </div>
     </div>
   );

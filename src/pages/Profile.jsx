@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/axiosConfig";
 import Navbar from "../components/Navbar";
+import AddressManager from "../components/AddressManager";
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -11,14 +12,7 @@ function Profile() {
 
   const fetchProfile = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      const response = await api.get("/users/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
+      const response = await api.get("/users/me");
       setUser(response.data);
     } catch (error) {
       console.error("Error fetching profile:", error);
@@ -29,9 +23,10 @@ function Profile() {
     return (
       <>
         <Navbar />
-        <h2 style={{ textAlign: "center", marginTop: "50px" }}>
-          Loading...
-        </h2>
+        <div className="loading">
+          <div className="loading-spinner"></div>
+          <p>Loading profile...</p>
+        </div>
       </>
     );
   }
@@ -40,48 +35,33 @@ function Profile() {
     <>
       <Navbar />
 
-      <div
-        style={{
-          minHeight: "100vh",
-          backgroundColor: "#f5f5f5",
-          padding: "40px",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "600px",
-            margin: "0 auto",
-            background: "white",
-            padding: "30px",
-            borderRadius: "12px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h1
-            style={{
-              textAlign: "center",
-              color: "#6a1b9a",
-              marginBottom: "30px",
-            }}
-          >
-            My Profile
-          </h1>
+      <div className="auth-wrapper" style={{ alignItems: "flex-start", padding: "40px 20px" }}>
+        <div style={{ width: "100%", maxWidth: "500px" }}>
+          <div className="auth-container" style={{ margin: 0 }}>
+            <h2>My Profile</h2>
 
-          <div style={{ marginBottom: "15px" }}>
-            <strong>Name:</strong> {user.name}
+            <div className="form-group">
+              <strong style={{ color: "var(--text-secondary)", fontSize: "13px" }}>Name</strong>
+              <p style={{ margin: "4px 0 0" }}>{user.name}</p>
+            </div>
+
+            <div className="form-group">
+              <strong style={{ color: "var(--text-secondary)", fontSize: "13px" }}>Email</strong>
+              <p style={{ margin: "4px 0 0" }}>{user.email}</p>
+            </div>
+
+            <div className="form-group">
+              <strong style={{ color: "var(--text-secondary)", fontSize: "13px" }}>Phone</strong>
+              <p style={{ margin: "4px 0 0" }}>{user.phone}</p>
+            </div>
+
+            <div className="form-group">
+              <strong style={{ color: "var(--text-secondary)", fontSize: "13px" }}>Role</strong>
+              <p style={{ margin: "4px 0 0" }}>{user.role}</p>
+            </div>
           </div>
 
-          <div style={{ marginBottom: "15px" }}>
-            <strong>Email:</strong> {user.email}
-          </div>
-
-          <div style={{ marginBottom: "15px" }}>
-            <strong>Phone:</strong> {user.phone}
-          </div>
-
-          <div style={{ marginBottom: "15px" }}>
-            <strong>Role:</strong> {user.role}
-          </div>
+          <AddressManager />
         </div>
       </div>
     </>

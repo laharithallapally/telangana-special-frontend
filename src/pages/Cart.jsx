@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react'
 import api from '../api/axiosConfig'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 function Cart() {
   const [cart, setCart] = useState(null)
-  const [address, setAddress] = useState('')
+  const [addresses, setAddresses] = useState([])
+  const [selectedAddressId, setSelectedAddressId] = useState(null)
   const [loading, setLoading] = useState(true)
   const [ordering, setOrdering] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
     fetchCart()
+    fetchAddresses()
   }, [])
 
   const fetchCart = async () => {
@@ -21,6 +23,17 @@ function Cart() {
       navigate('/')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchAddresses = async () => {
+    try {
+      const res = await api.get('/addresses')
+      setAddresses(res.data)
+      const defaultAddr = res.data.find(a => a.isDefault) || res.data[0]
+      if (defaultAddr) setSelectedAddressId(defaultAddr.id)
+    } catch (err) {
+      console.error('Error fetching addresses:', err)
     }
   }
 
@@ -43,8 +56,8 @@ function Cart() {
   }
 
   const placeOrder = async () => {
-    if (!address.trim()) {
-      alert('Please enter delivery address!')
+    if (!selectedAddressId) {
+      alert('Please select or add a delivery address!')
       return
     }
 
@@ -79,7 +92,7 @@ function Cart() {
             })
 
             // place the actual order
-            await api.post('/orders', { deliveryAddress: address })
+            await api.post('/orders', { addressId: selectedAddressId })
 
             alert('Payment successful! Order placed 🎉')
             navigate('/orders')
@@ -203,12 +216,41 @@ function Cart() {
           <strong>₹{cart.grandTotal}</strong>
         </div>
 
-        <input
-          type="text"
-          placeholder="📍 Enter delivery address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
+        <div className="address-picker">
+          <span className="address-picker-label">📍 Deliver to</span>
+
+          {addresses.length === 0 ? (
+            <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
+              No saved address yet.{' '}
+              <Link to="/profile" className="address-picker-add-link">
+                Add one in your profile
+              </Link>
+            </p>
+          ) : (
+            <>
+              {addresses.map((addr) => (
+                <label
+                  key={addr.id}
+                  className={`address-picker-option ${selectedAddressId === addr.id ? 'selected' : ''}`}
+                >
+                  <input
+                    type="radio"
+                    name="deliveryAddress"
+                    checked={selectedAddressId === addr.id}
+                    onChange={() => setSelectedAddressId(addr.id)}
+                  />
+                  <span className="address-picker-option-text">
+                    {addr.label} {addr.isDefault && '· Default'}
+                    <span>{addr.addressLine}, {addr.city}, {addr.state} - {addr.pincode}</span>
+                  </span>
+                </label>
+              ))}
+              <Link to="/profile" className="address-picker-add-link">
+                + Add a new address
+              </Link>
+            </>
+          )}
+        </div>
 
         <button
           className="order-btn"
