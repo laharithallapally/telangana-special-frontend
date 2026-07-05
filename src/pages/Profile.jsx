@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import api from "../api/axiosConfig";
-import Navbar from "../components/Navbar";
 import AddressManager from "../components/AddressManager";
 
 function Profile() {
@@ -22,7 +21,6 @@ function Profile() {
   if (!user) {
     return (
       <>
-        <Navbar />
         <div className="loading">
           <div className="loading-spinner"></div>
           <p>Loading profile...</p>
@@ -33,7 +31,6 @@ function Profile() {
 
   return (
     <>
-      <Navbar />
 
       <div className="auth-wrapper" style={{ alignItems: "flex-start", padding: "40px 20px" }}>
         <div style={{ width: "100%", maxWidth: "500px" }}>

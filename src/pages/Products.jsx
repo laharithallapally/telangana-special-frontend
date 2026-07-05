@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import api from "../api/axiosConfig";
+import { useToast } from "../context/ToastContext";
 import "./Products.css";
 
 function Products() {
+  const [searchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "All");
   const [addedItems, setAddedItems] = useState({});
+  const { showToast } = useToast();
 
   useEffect(() => {
     fetchProducts();
@@ -28,19 +31,20 @@ function Products() {
   const addToCart = async (productId, productName) => {
     const token = localStorage.getItem('token')
     if (!token) {
-      alert('Please login first!')
+      showToast('Please login first!', 'error')
       return
     }
     try {
       await api.post('/cart', { productId, quantity: 1 })
       // show added state on button
       setAddedItems(prev => ({ ...prev, [productId]: true }))
+      showToast(`${productName} added to cart`, 'success')
       setTimeout(() => {
         setAddedItems(prev => ({ ...prev, [productId]: false }))
       }, 2000)
     } catch (error) {
       console.error('Add to cart error:', error)
-      alert('Failed to add to cart!')
+      showToast('Failed to add to cart!', 'error')
     }
   }
 
@@ -150,7 +154,11 @@ function Products() {
 
               {/* Product Content */}
               <div className="product-content">
-                <h2 className="product-name">
+                <h2 className="product-name" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span
+                    className={`veg-indicator ${product.isVeg === false ? 'non-veg' : ''}`}
+                    title={product.isVeg === false ? 'Non-Veg' : 'Veg'}
+                  ></span>
                   <Link to={`/products/${product.id}`}>
                     {product.name}
                   </Link>
@@ -161,7 +169,6 @@ function Products() {
                 </p>
 
                 <div className="product-meta">
-                  <span className="stock-info">📦 {product.stock} left</span>
                   <span className={product.available ? 'available-badge' : 'unavailable-badge'}>
                     {product.available ? '✅ Available' : '❌ Out of Stock'}
                   </span>
