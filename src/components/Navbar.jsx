@@ -159,7 +159,7 @@ function Navbar({ cartCount = 0 }) {
           textDecoration: "none", display: "flex",
           alignItems: "center", gap: "10px", flexShrink: 0,
         }}>
-          <span style={{ fontSize: "30px", lineHeight: 1 }}>🏛️</span>
+          <span style={{ fontSize: "30px", lineHeight: 1 }}>🌶️</span>
           <div style={{ lineHeight: 1.15 }}>
             <div style={{ color: "#3a1a00", fontWeight: "900", fontSize: "15px", letterSpacing: "0.5px" }}>
               TELANGANA <span style={{ color: "#e2632b" }}>SPECIAL</span>
