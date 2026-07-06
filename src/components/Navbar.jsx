@@ -48,10 +48,10 @@ function Navbar({ cartCount = 0 }) {
           transition: width 0.25s;
           border-radius: 2px;
         }
-        .ts-navlink:hover { color: #e2632b !important; }
-        .ts-navlink:hover::after { width: 100%; }
-        .ts-navlink.active { color: #e2632b !important; font-weight: 700; }
-        .ts-navlink.active::after { width: 100%; }
+        .ts-navlink:hover { color: #e2632b !important; text-decoration: none !important; }
+.ts-navlink:hover::after { width: 100%; }
+.ts-navlink.active { color: #e2632b !important; font-weight: 700; text-decoration: none !important; }
+.ts-navlink.active::after { width: 100%; }
 
         .ts-mlink {
           color: #fff;
@@ -63,7 +63,7 @@ function Navbar({ cartCount = 0 }) {
           transition: color 0.2s;
           display: block;
         }
-        .ts-mlink:hover, .ts-mlink.active { color: #e2632b; }
+          .ts-mlink:hover, .ts-mlink.active { color: #e2632b; text-decoration: none; }
 
         .ts-order-btn { transition: background 0.2s, transform 0.15s; }
         .ts-order-btn:hover { background: #c9521e !important; transform: scale(1.03); }

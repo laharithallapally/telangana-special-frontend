@@ -14,7 +14,7 @@ import ResetPassword from "./pages/ResetPassword";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
-
+import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar";
 import AdminEditProduct from "./pages/AdminEditProduct";
 import AdminOrders from "./pages/AdminOrders";
@@ -29,6 +29,8 @@ function App() {
       <Navbar />
 
       <Routes>
+
+        <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
 
 
         {/* Public Routes */}

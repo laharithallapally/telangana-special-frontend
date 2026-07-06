@@ -19,7 +19,7 @@ function NotificationBell() {
   useEffect(() => {
     if (!user) return;
 
-    fetchUnreadCount(true); // initial load, don't toast on first check
+    fetchUnreadCount(true); // initial load — will auto-toast if there are unread notifications
     const interval = setInterval(() => fetchUnreadCount(false), 15000);
 
     const handleClickOutside = (e) => {
@@ -50,7 +50,9 @@ function NotificationBell() {
       const res = await api.get("/notifications/unread-count");
       const newCount = res.data.count;
 
-      if (!isInitial && newCount > prevUnreadRef.current) {
+      if (isInitial && newCount > 0) {
+        fetchLatestNotificationForToast();
+      } else if (!isInitial && newCount > prevUnreadRef.current) {
         fetchLatestNotificationForToast();
       }
 
@@ -109,6 +111,16 @@ function NotificationBell() {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await api.delete(`/notifications/${id}`);
+      setNotifications((prev) => prev.filter((n) => n.id !== id));
+    } catch (err) {
+      console.error(err);
+      alert("Could not delete notification. Please try again.");
+    }
+  };
+
   const timeAgo = (dateString) => {
     const diff = Math.floor((new Date() - new Date(dateString)) / 1000);
     if (diff < 60) return "just now";
@@ -154,8 +166,17 @@ function NotificationBell() {
                     key={n.id}
                     className={`notif-item ${!n.isRead ? "notif-unread" : ""}`}
                   >
-                    <p className="notif-message">{n.message}</p>
-                    <span className="notif-time">{timeAgo(n.createdAt)}</span>
+                    <div className="notif-item-content">
+                      <p className="notif-message">{n.message}</p>
+                      <span className="notif-time">{timeAgo(n.createdAt)}</span>
+                    </div>
+                    <button
+                      className="notif-delete-btn"
+                      onClick={(e) => { e.stopPropagation(); handleDelete(n.id); }}
+                      aria-label="Delete notification"
+                    >
+                      ×
+                    </button>
                   </div>
                 ))}
               </div>
