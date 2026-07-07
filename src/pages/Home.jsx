@@ -4,11 +4,15 @@ import api from "../api/axiosConfig";
 import { useToast } from "../context/ToastContext";
 
 import heroSarvapindi from "../assets/hero-sarvapindi.png";
+import sarvapindiPlate from "../assets/products/sarvapindi-plate.png";
 
 import bunMaskaCard from "../assets/products/bun-maska-card.png";
+import bunMaskaPlate from "../assets/products/bun-maska-plate.png";
 import potatoTwisterCard from "../assets/products/potato-twister-card.png";
-import bobbatluCard from "../assets/products/bobbatlu-card.png";
+import potatoTwisterAction from "../assets/products/potato-twister-action.png";
+import bobbatluGhee from "../assets/products/bobbatlu-ghee.png";
 import blueberryBunCard from "../assets/products/blueberry-bun-card.png";
+import blueberryBunPlate from "../assets/products/blueberry-bun-plate.png";
 
 import bunMaska from "../assets/products/bun-maska.png";
 import blueberryBun from "../assets/products/blueberry-bun.png";
@@ -41,8 +45,9 @@ const SLIDES = [
     titleTop: "THE TRUE TASTE OF",
     titleMain: "TELANGANA",
     sub: "Crispy, spicy, soulful street food — delivered fresh, hot & fast from our kitchen straight to your door.",
-    image: heroSarvapindi,
-    focus: "center center",
+    image: sarvapindiPlate,
+    focus: "center 45%",
+    effect: "slideRight",
     cta: "EXPLORE OUR MENU",
     badge: { label: "OUR SPECIALITY", title: "Sarvapindi ♥", sub: "A Timeless Telangana Classic" },
   },
@@ -51,8 +56,11 @@ const SLIDES = [
     titleTop: "FRESH BAKED",
     titleMain: "BUN MASKA",
     sub: "Buttery soft buns served warm with a generous slab of maska — the classic Irani cafe favourite.",
-    image: bunMaskaCard,
+    image: bunMaskaPlate,
     focus: "center center",
+    layout: "containRight",
+    effect: "slideRight",
+    shine: true,
     cta: "ORDER NOW",
     badge: { label: "BEST SELLER", title: "Bun Maska ♥", sub: "Only ₹40 per plate" },
   },
@@ -61,8 +69,8 @@ const SLIDES = [
     titleTop: "FESTIVE FAVOURITE",
     titleMain: "BOBBATLU",
     sub: "Stuffed sweet flatbreads made the traditional way — a taste of every Telangana festival, any day of the year.",
-    image: bobbatluCard,
-    focus: "center center",
+    image: bobbatluGhee,
+    focus: "center 35%",
     cta: "SHOP BOBBATLU",
     badge: { label: "TRENDING", title: "Bobbatlu ♥", sub: "Also try Chocolate & Carrot" },
   },
@@ -71,8 +79,9 @@ const SLIDES = [
     titleTop: "STREET STYLE",
     titleMain: "POTATO TWISTER",
     sub: "Spiral-cut potatoes, deep fried golden and tossed in fiery masala — the ultimate street-side crunch.",
-    image: potatoTwisterCard,
-    focus: "center center",
+    image: potatoTwisterAction,
+    focus: "center 40%",
+    effect: "fallRoll",
     cta: "ORDER NOW",
     badge: { label: "MUST TRY", title: "Potato Twister ♥", sub: "Only ₹80 per stick" },
   },
@@ -81,8 +90,9 @@ const SLIDES = [
     titleTop: "BAKERY FRESH",
     titleMain: "BLUEBERRY BUN",
     sub: "Soft milk bun loaded with real blueberry filling — a sweet surprise baked fresh every morning.",
-    image: blueberryBunCard,
-    focus: "center center",
+    image: blueberryBunPlate,
+    focus: "center 42%",
+    effect: "blueberryFall",
     cta: "SHOP BAKERY",
     badge: { label: "NEW", title: "Blueberry Bun ♥", sub: "Only ₹70 per piece" },
   },
@@ -100,7 +110,7 @@ const SPECIALITY_PRODUCTS = [
   { name: "Bun Maska",      tagline: "Soft. Warm. Irresistible.",     image: bunMaskaCard,      specialty: false },
   { name: "Potato Twister", tagline: "Crispy. Spicy. Addictive.",     image: potatoTwisterCard, specialty: false },
   { name: "Sarvapindi",     tagline: "Telangana's Timeless Classic.", image: heroSarvapindi,    specialty: true  },
-  { name: "Bobbatlu",       tagline: "Sweet. Soft. Soulful.",         image: bobbatluCard,      specialty: false },
+  { name: "Bobbatlu",       tagline: "Sweet. Soft. Soulful.",         image: bobbatluGhee,      specialty: false },
   { name: "Blueberry Bun",  tagline: "Sweet meets Street.",           image: blueberryBunCard,  specialty: false },
 ];
 
@@ -143,6 +153,8 @@ export default function Home() {
   const [slide, setSlide] = useState(0);
   const [testimonial, setTestimonial] = useState(0);
   const slideTimer = useRef(null);
+  const aboutImgRef = useRef(null);
+  const [aboutImgVisible, setAboutImgVisible] = useState(false);
 
   /* ── fetch live products so the homepage always mirrors the real menu ── */
   useEffect(() => {
@@ -178,6 +190,23 @@ export default function Home() {
   useEffect(() => {
     const t = setInterval(() => setTestimonial((s) => (s + 1) % TESTIMONIALS.length), 4500);
     return () => clearInterval(t);
+  }, []);
+
+  /* ── reveal the About section photo with a slide-in-from-right once it scrolls into view ── */
+  useEffect(() => {
+    const node = aboutImgRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setAboutImgVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
   }, []);
 
   const toggleWishlist = (name) =>
@@ -226,6 +255,59 @@ export default function Home() {
         @keyframes shimmer { 0% { background-position:-200% center; } 100% { background-position:200% center; } }
         @keyframes fadeUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
         @keyframes heroKenBurns { 0% { transform:scale(1); } 100% { transform:scale(1.04); } }
+        @keyframes heroFallRoll {
+          0%   { transform:translateY(-60%) rotate(-1080deg) scale(1.06); opacity:0; }
+          8%   { opacity:1; }
+          100% { transform:translateY(0) rotate(0deg) scale(1.06); opacity:1; }
+        }
+        @keyframes masalaFall {
+          0%   { transform:translateY(-40px) translateX(0) rotate(0deg); opacity:0; }
+          10%  { opacity:1; }
+          85%  { opacity:1; }
+          100% { transform:translateY(340px) translateX(var(--drift,0px)) rotate(140deg); opacity:0; }
+        }
+        .hero-bg-img.effect-fall.active { animation:heroFallRoll 3.4s cubic-bezier(.13,.7,.24,1) both; }
+        @keyframes heroSlideRight {
+          0%   { transform:translateX(38%) scale(1.08); opacity:0; }
+          100% { transform:translateX(0) scale(1.06); opacity:1; }
+        }
+        .hero-bg-img.effect-slide-right.active { animation:heroSlideRight 3.2s cubic-bezier(.16,.7,.2,1) both; }
+        @keyframes shineSweep {
+          0%   { transform:translateX(-60%) translateY(-10%) rotate(18deg); opacity:0; }
+          15%  { opacity:.55; }
+          50%  { opacity:.55; }
+          70%  { opacity:0; }
+          100% { transform:translateX(140%) translateY(10%) rotate(18deg); opacity:0; }
+        }
+        .shine-sweep {
+          position:absolute; top:-20%; left:-30%; width:55%; height:140%;
+          background:linear-gradient(100deg, rgba(255,255,255,0) 30%, rgba(255,241,214,.9) 50%, rgba(255,255,255,0) 70%);
+          mix-blend-mode:overlay; pointer-events:none;
+          animation:shineSweep 4.5s ease-in-out infinite;
+        }
+        @keyframes blueberryFall {
+          0%   { transform:translateY(-50px) translateX(0) rotate(0deg); opacity:0; }
+          10%  { opacity:1; }
+          80%  { opacity:1; }
+          100% { transform:translateY(280px) translateX(var(--drift,0px)) rotate(200deg); opacity:0; }
+        }
+        .blueberry-particle {
+          position:absolute; top:4%; left:50%; border-radius:50%;
+          background:radial-gradient(circle at 32% 30%, #6E5BA8 0%, #3B2C63 55%, #241a42 100%);
+          opacity:0; pointer-events:none;
+          animation:blueberryFall 2.6s ease-in infinite both;
+          box-shadow: inset -1px -1px 2px rgba(0,0,0,.4);
+        }
+        .masala-particle {
+          position:absolute; top:10%; left:50%; width:5px; height:5px; border-radius:50%;
+          background:#C1440E; opacity:0; pointer-events:none;
+          animation:masalaFall 2.4s ease-in both;
+        }
+        .masala-crumb {
+          position:absolute; top:10%; left:50%; border-radius:2px;
+          background:#8A4A1E; opacity:0; pointer-events:none;
+          animation:masalaFall 2.6s ease-in both;
+        }
         .ts-card { transition:transform .25s,box-shadow .25s; cursor:pointer; }
         .ts-card:hover { transform:translateY(-5px); box-shadow:0 14px 30px rgba(213,101,46,.18)!important; }
         .ts-add:hover  { background:#B5501F!important; }
@@ -235,6 +317,11 @@ export default function Home() {
         .ts-heart:hover { color:#D5652E!important; }
         .img-zoom { transition:transform .45s ease; }
         .img-zoom:hover { transform:scale(1.06); }
+        .about-img-reveal {
+          opacity:0; transform:translateX(70px);
+          transition:opacity 1s cubic-bezier(.16,.7,.2,1), transform 1s cubic-bezier(.16,.7,.2,1);
+        }
+        .about-img-reveal.in-view { opacity:1; transform:translateX(0); }
         .ts-cat:hover { transform:translateY(-4px); box-shadow:0 12px 26px rgba(213,101,46,.2)!important; border-color:#D5652E!important; }
         .ts-dot { transition:all .25s; cursor:pointer; }
         .ts-arrow { transition:background .2s,transform .2s; cursor:pointer; }
@@ -281,26 +368,128 @@ export default function Home() {
       }}>
 
         {/* full-bleed background photos, one floats in as the next fades out */}
-        {SLIDES.map((s, i) => (
-          <img
-            key={i}
-            src={s.image}
-            alt={s.titleMain}
-            className={`hero-bg-img${i === slide ? " active" : ""}`}
-            style={{
-              position: "absolute", inset: 0, width: "100%", height: "100%",
-              objectFit: "cover", objectPosition: s.focus || "center",
-              opacity: i === slide ? 1 : 0,
-              zIndex: 0,
-            }}
-          />
-        ))}
+        {SLIDES.map((s, i) =>
+          s.layout === "containRight" ? (
+            <div key={i} style={{ position: "absolute", inset: 0, opacity: i === slide ? 1 : 0, transition: "opacity 1.4s ease-in-out", zIndex: 0 }}>
+              <img src={s.image} alt="" style={{
+                position: "absolute", inset: 0, width: "100%", height: "100%",
+                objectFit: "cover", objectPosition: s.focus || "center",
+                filter: "blur(38px) brightness(.5) saturate(1.15)", transform: "scale(1.15)",
+              }} />
+              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "2%", boxSizing: "border-box" }}>
+                <img
+                  src={s.image}
+                  alt={s.titleMain}
+                  className={`hero-bg-img${i === slide ? " active" : ""}${s.effect === "slideRight" ? " effect-slide-right" : ""}`}
+                  style={{
+                    maxHeight: "104%", maxWidth: "76%", objectFit: "contain",
+                    borderRadius: "14px", boxShadow: "0 30px 70px rgba(0,0,0,.5)",
+                  }}
+                />
+              </div>
+            </div>
+          ) : (
+            <img
+              key={i}
+              src={s.image}
+              alt={s.titleMain}
+              className={`hero-bg-img${i === slide ? " active" : ""}${s.effect === "fallRoll" ? " effect-fall" : ""}${s.effect === "slideRight" ? " effect-slide-right" : ""}`}
+              style={{
+                position: "absolute", inset: 0, width: "100%", height: "100%",
+                objectFit: "cover", objectPosition: s.focus || "center",
+                opacity: i === slide ? 1 : 0,
+                zIndex: 0,
+              }}
+            />
+          )
+        )}
 
         {/* darkening gradient so the white text stays readable over any photo */}
         <div style={{
           position: "absolute", inset: 0, zIndex: 1,
           background: "linear-gradient(100deg, rgba(20,12,7,.82) 0%, rgba(20,12,7,.55) 42%, rgba(20,12,7,.15) 70%, rgba(20,12,7,.35) 100%)",
         }} />
+
+        {slide === SLIDES.findIndex((s) => s.shine) && (
+          <div key={`shine-${slide}`} style={{
+            position: "absolute", right: "2%", top: "0%", width: "76%", height: "100%",
+            zIndex: 2, overflow: "hidden", pointerEvents: "none", borderRadius: "14px",
+          }}>
+            <div className="shine-sweep" />
+          </div>
+        )}
+
+        {slide === SLIDES.findIndex((s) => s.effect === "blueberryFall") && (
+          <div key={`blueberry-${slide}`} style={{
+            position: "absolute", inset: 0,
+            zIndex: 2, overflow: "hidden", pointerEvents: "none",
+          }}>
+            {[
+              { left: "58%", delay: "0.2s", drift: "18px", size: 10 },
+              { left: "64%", delay: "0.6s", drift: "-14px", size: 12 },
+              { left: "70%", delay: "1.0s", drift: "22px", size: 9 },
+              { left: "53%", delay: "0.9s", drift: "-20px", size: 11 },
+              { left: "75%", delay: "1.4s", drift: "10px", size: 10 },
+              { left: "60%", delay: "1.7s", drift: "-8px", size: 8 },
+              { left: "48%", delay: "1.3s", drift: "16px", size: 11 },
+              { left: "78%", delay: "2.0s", drift: "-18px", size: 9 },
+              { left: "66%", delay: "2.3s", drift: "6px", size: 10 },
+              { left: "56%", delay: "1.9s", drift: "-24px", size: 12 },
+              { left: "72%", delay: "0.4s", drift: "12px", size: 9 },
+              { left: "62%", delay: "1.1s", drift: "-10px", size: 11 },
+            ].map((p, idx) => (
+              <span key={idx} className="blueberry-particle" style={{
+                left: p.left, animationDelay: p.delay, "--drift": p.drift,
+                width: `${p.size}px`, height: `${p.size}px`,
+              }} />
+            ))}
+          </div>
+        )}
+
+        {slide === SLIDES.findIndex((s) => s.effect === "fallRoll") && (
+          <div key={`masala-${slide}`} style={{ position: "absolute", inset: 0, zIndex: 2, overflow: "hidden", pointerEvents: "none" }}>
+            {[
+              { left: "48%", delay: "3.1s", drift: "18px" },
+              { left: "53%", delay: "3.2s", drift: "-14px" },
+              { left: "58%", delay: "3.3s", drift: "22px" },
+              { left: "44%", delay: "3.25s", drift: "-20px" },
+              { left: "62%", delay: "3.4s", drift: "10px" },
+              { left: "50%", delay: "3.5s", drift: "-8px" },
+              { left: "40%", delay: "3.35s", drift: "16px" },
+              { left: "66%", delay: "3.45s", drift: "-18px" },
+              { left: "55%", delay: "3.6s", drift: "6px" },
+              { left: "46%", delay: "3.55s", drift: "-24px" },
+              { left: "60%", delay: "3.65s", drift: "14px" },
+              { left: "51%", delay: "3.7s", drift: "-10px" },
+              { left: "42%", delay: "3.8s", drift: "26px" },
+              { left: "64%", delay: "3.9s", drift: "-16px" },
+              { left: "38%", delay: "4.0s", drift: "12px" },
+              { left: "68%", delay: "4.1s", drift: "-22px" },
+              { left: "56%", delay: "4.2s", drift: "8px" },
+              { left: "47%", delay: "4.3s", drift: "-12px" },
+              { left: "61%", delay: "4.4s", drift: "18px" },
+              { left: "43%", delay: "4.5s", drift: "-10px" },
+            ].map((p, idx) => (
+              <span key={idx} className="masala-particle" style={{
+                left: p.left, animationDelay: p.delay, "--drift": p.drift,
+                background: idx % 3 === 0 ? "#E08A2E" : "#C1440E",
+              }} />
+            ))}
+            {[
+              { left: "49%", delay: "3.5s", drift: "20px", size: 8 },
+              { left: "57%", delay: "3.9s", drift: "-16px", size: 9 },
+              { left: "45%", delay: "4.2s", drift: "24px", size: 7 },
+              { left: "63%", delay: "4.5s", drift: "-14px", size: 8 },
+              { left: "52%", delay: "4.7s", drift: "10px", size: 7 },
+            ].map((p, idx) => (
+              <span key={`crumb-${idx}`} className="masala-crumb" style={{
+                left: p.left, animationDelay: p.delay, "--drift": p.drift,
+                width: `${p.size}px`, height: `${p.size}px`,
+                transform: `rotate(${idx * 23}deg)`,
+              }} />
+            ))}
+          </div>
+        )}
 
         {SLIDES.map((s, i) => (
           <div key={i} style={{ display: i === slide ? "contents" : "none" }}>
@@ -481,12 +670,15 @@ export default function Home() {
           </div>
 
           <div style={{ flex: "1 1 280px", display: "flex", flexDirection: "column", gap: "16px" }}>
-            <div className="about-img-wrap" style={{
-              borderRadius: "16px", overflow: "hidden", border: "1px solid rgba(58,36,24,.1)",
-              boxShadow: "0 10px 30px rgba(58,36,24,.1)", height: "460px",
-            }}>
-              <img src={heroSarvapindi} alt="Sarvapindi" className="img-zoom" style={{
-                width: "100%", height: "100%", objectFit: "cover", objectPosition: "left center",
+            <div
+              ref={aboutImgRef}
+              className={`about-img-wrap about-img-reveal${aboutImgVisible ? " in-view" : ""}`}
+              style={{
+                borderRadius: "16px", overflow: "hidden", border: "1px solid rgba(58,36,24,.1)",
+                boxShadow: "0 10px 30px rgba(58,36,24,.1)", height: "460px",
+              }}>
+              <img src={sarvapindiPlate} alt="Sarvapindi" className="img-zoom" style={{
+                width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%",
               }} />
             </div>
 
