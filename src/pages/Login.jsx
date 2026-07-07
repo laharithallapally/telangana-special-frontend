@@ -23,11 +23,12 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setMessage("");
 
     try {
       const response = await api.post("/auth/login", {
-        email: formData.email.trim(),
-        password: formData.password.trim()
+        email: formData.email.trim().toLowerCase(),
+        password: formData.password.trim(),
       });
       // save token separately for axios interceptor
       localStorage.setItem("token", response.data.token);
@@ -49,6 +50,8 @@ function Login() {
       console.error(error);
 
       setMessage("❌ Invalid Email or Password");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,6 +89,11 @@ function Login() {
               placeholder="Email"
               onChange={handleChange}
               value={formData.email}
+              autoCapitalize="none"
+              autoCorrect="off"
+              autoComplete="email"
+              spellCheck="false"
+              inputMode="email"
               required
             />
           </div>
@@ -97,6 +105,10 @@ function Login() {
               placeholder="Password"
               onChange={handleChange}
               value={formData.password}
+              autoCapitalize="none"
+              autoCorrect="off"
+              autoComplete="current-password"
+              spellCheck="false"
               required
             />
           </div>
