@@ -13,10 +13,49 @@ function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
   const [adding, setAdding] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
+  const [wishlisted, setWishlisted] = useState(false);
+  const [wishlistBusy, setWishlistBusy] = useState(false);
 
   useEffect(() => {
     fetchProduct();
+    checkWishlist();
   }, [id]);
+
+  const checkWishlist = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    try {
+      const res = await api.get("/wishlist");
+      setWishlisted(res.data.some((i) => String(i.productId) === String(id)));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const toggleWishlist = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      showToast("Please login first!", "error");
+      return;
+    }
+    setWishlistBusy(true);
+    try {
+      if (wishlisted) {
+        await api.delete(`/wishlist/${id}`);
+        setWishlisted(false);
+        showToast("Removed from wishlist", "info");
+      } else {
+        await api.post(`/wishlist/${id}`);
+        setWishlisted(true);
+        showToast("Added to wishlist", "success");
+      }
+    } catch (error) {
+      console.error(error);
+      showToast("Failed to update wishlist", "error");
+    } finally {
+      setWishlistBusy(false);
+    }
+  };
 
   const fetchProduct = async () => {
     setLoading(true);
@@ -146,14 +185,32 @@ function ProductDetails() {
             </div>
           )}
 
-          <button
-            className="cart-btn"
-            style={{ width: "100%", maxWidth: "280px", padding: "13px 0", fontSize: "15px" }}
-            onClick={addToCart}
-            disabled={adding || outOfStock}
-          >
-            {outOfStock ? "Out of Stock" : adding ? "Adding..." : "🛒 Add to Cart"}
-          </button>
+          <div style={{ display: "flex", gap: "10px", maxWidth: "280px" }}>
+            <button
+              className="cart-btn"
+              style={{ flex: 1, padding: "13px 0", fontSize: "15px" }}
+              onClick={addToCart}
+              disabled={adding || outOfStock}
+            >
+              {outOfStock ? "Out of Stock" : adding ? "Adding..." : "🛒 Add to Cart"}
+            </button>
+
+            <button
+              onClick={toggleWishlist}
+              disabled={wishlistBusy}
+              title={wishlisted ? "Remove from wishlist" : "Save to wishlist"}
+              style={{
+                width: "48px",
+                border: "1px solid var(--border)",
+                borderRadius: "8px",
+                background: "var(--bg-card)",
+                fontSize: "18px",
+                cursor: "pointer",
+              }}
+            >
+              {wishlisted ? "❤️" : "🤍"}
+            </button>
+          </div>
         </div>
       </div>
 

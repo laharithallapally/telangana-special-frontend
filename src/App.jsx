@@ -11,7 +11,7 @@ import ProductDetails from "./pages/ProductDetails";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 
-
+import Wishlist from "./pages/Wishlist";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import Contact from "./pages/Contact";
@@ -31,6 +31,7 @@ function App() {
       <Routes>
 
         <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
+       <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
 
 
         {/* Public Routes */}

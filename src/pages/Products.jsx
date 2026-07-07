@@ -11,11 +11,51 @@ function Products() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "All");
   const [addedItems, setAddedItems] = useState({});
+  const [wishlistIds, setWishlistIds] = useState(new Set());
   const { showToast } = useToast();
 
   useEffect(() => {
     fetchProducts();
+    fetchWishlist();
   }, []);
+
+  const fetchWishlist = async () => {
+    const token = localStorage.getItem('token')
+    if (!token) return
+    try {
+      const res = await api.get('/wishlist')
+      setWishlistIds(new Set(res.data.map(i => i.productId)))
+    } catch (error) {
+      console.error('Error fetching wishlist:', error)
+    }
+  }
+
+  const toggleWishlist = async (productId) => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      showToast('Please login first!', 'error')
+      return
+    }
+    const isSaved = wishlistIds.has(productId)
+    try {
+      if (isSaved) {
+        await api.delete(`/wishlist/${productId}`)
+        setWishlistIds(prev => {
+          const next = new Set(prev)
+          next.delete(productId)
+          return next
+        })
+        showToast('Removed from wishlist', 'info')
+      } else {
+        await api.post(`/wishlist/${productId}`)
+        setWishlistIds(prev => new Set(prev).add(productId))
+        showToast('Added to wishlist', 'success')
+      }
+    } catch (error) {
+      console.error('Wishlist toggle error:', error)
+      showToast('Failed to update wishlist', 'error')
+    }
+  }
 
   const fetchProducts = async () => {
     try {
@@ -145,6 +185,31 @@ function Products() {
 
                 {/* Category Badge on image */}
                 <div className="img-category-badge">{product.category}</div>
+
+                {/* Wishlist heart toggle */}
+                <button
+                  onClick={(e) => { e.preventDefault(); toggleWishlist(product.id); }}
+                  title={wishlistIds.has(product.id) ? "Remove from wishlist" : "Save to wishlist"}
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    width: "30px",
+                    height: "30px",
+                    borderRadius: "50%",
+                    border: "none",
+                    background: "#fff",
+                    boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "15px",
+                    zIndex: 2,
+                  }}
+                >
+                  {wishlistIds.has(product.id) ? "❤️" : "🤍"}
+                </button>
 
                 {/* Out of stock overlay */}
                 {product.available === false && (

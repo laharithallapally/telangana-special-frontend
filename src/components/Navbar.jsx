@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import NotificationBell from "./NotificationBell";
+import api from "../api/axiosConfig";
 
 const NAV_LINKS = [
   { to: "/home",      label: "Home" },
@@ -13,9 +14,20 @@ const NAV_LINKS = [
 function Navbar({ cartCount = 0 }) {
   const navigate  = useNavigate();
   const location  = useLocation();
+  const [wishlistCount, setWishlistCount] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const user = JSON.parse(localStorage.getItem("user") || "null");
+
+  useEffect(() => {
+    if (!user) {
+      setWishlistCount(0);
+      return;
+    }
+    api.get("/wishlist")
+      .then(res => setWishlistCount(res.data.length))
+      .catch(() => {});
+  }, [location.pathname]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -195,6 +207,26 @@ function Navbar({ cartCount = 0 }) {
             </div>
           )}
 
+          {/* Wishlist */}
+          {user && (
+            <Link to="/wishlist" className="ts-hide-mobile" style={{
+              position: "relative", textDecoration: "none",
+              fontSize: "22px", color: "#3a1a00",
+              display: "flex", alignItems: "center",
+            }}>
+              ❤️
+              {wishlistCount > 0 && (
+                <span style={{
+                  position: "absolute", top: "-7px", right: "-9px",
+                  background: "#c9521e", color: "#fff", borderRadius: "50%",
+                  fontSize: "9px", fontWeight: "800", width: "16px", height: "16px",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  boxShadow: "0 2px 6px rgba(201,82,30,0.5)",
+                }}>{wishlistCount}</span>
+              )}
+            </Link>
+          )}
+
           {/* Cart */}
           {user && (
             <Link to="/cart" className="ts-hide-mobile" style={{
@@ -316,6 +348,11 @@ function Navbar({ cartCount = 0 }) {
                 color: "#fff", textDecoration: "none", fontSize: "16px", padding: "10px 0",
                 borderBottom: "1px solid rgba(255,255,255,0.07)",
               }}>🛒 Cart {cartCount > 0 && `(${cartCount})`}</Link>
+
+              <Link to="/wishlist" onClick={() => setMenuOpen(false)} style={{
+                color: "#fff", textDecoration: "none", fontSize: "16px", padding: "10px 0",
+                borderBottom: "1px solid rgba(255,255,255,0.07)",
+              }}>❤️ Wishlist {wishlistCount > 0 && `(${wishlistCount})`}</Link>
 
               <Link to="/orders" onClick={() => setMenuOpen(false)} style={{
                 color: "#fff", textDecoration: "none", fontSize: "16px", padding: "10px 0",
