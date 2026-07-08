@@ -300,6 +300,32 @@
   cursor: not-allowed;
 }
 
+.whatsapp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  background: #25D366;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.whatsapp-btn:hover:not(:disabled) {
+  background: #1ea952;
+  transform: scale(1.05);
+}
+
+.whatsapp-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* ─── Mobile ─── */
 @media (max-width: 768px) {
   .products-grid {
@@ -319,5 +345,31 @@
 
   .page-title {
     font-size: 24px;
+  }
+
+  /* 3 action buttons (Details / Add / WhatsApp) don't fit in one row
+     on a 160px-wide mobile card — wrap price+actions onto their own
+     lines and let actions take the full card width. */
+  .product-footer {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .product-actions {
+    width: 100%;
+  }
+
+  .view-btn,
+  .cart-btn {
+    flex: 1;
+    padding: 7px 6px;
+    font-size: 11px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .whatsapp-btn {
+    width: 32px;
+    height: 32px;
   }
 }
