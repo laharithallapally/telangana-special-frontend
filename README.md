@@ -1,16 +1,37 @@
-# React + Vite
+# Telangana Special — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A portfolio/demo project showcasing traditional Telangana snacks and sweets through a modern, responsive React storefront UI. Built to demonstrate frontend development skills — component design, routing, image optimization, and a clean product-catalog layout.
 
-Currently, two official plugins are available:
+> 🔗 **Live Demo:** [telangana-special-frontend.vercel.app](https://telangana-special-frontend.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Responsive product showcase for traditional snacks like **Bobbatlu**, **Sarvapindi**, **Bun Maska**, **Potato Twister**, and more
+- Optimized image delivery using **WebP** format for faster load times
+- Clean, component-based React architecture
+- Fast dev experience powered by **Vite** with Hot Module Replacement (HMR)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🍽️ Product Categories
+
+| Category | Examples |
+|---|---|
+| Bobbatlu varieties | Ghee Bobbatlu, Carrot Bobbatlu, Chocolate Bobbatlu |
+| Bun items | Bun Maska, Blueberry Bun, Mango Cream Bun |
+| Traditional snacks | Sarvapindi, Potato Twister |
+
+---
+
+## 🛠️ Tech Stack
+
+- **React** — UI library
+- **Vite** — build tool & dev server
+- **ESLint** — code linting
+- Image assets optimized in **WebP** format
+
+---
+
+## 📁 Project Structure
