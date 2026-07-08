@@ -3,25 +3,25 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axiosConfig";
 import { useToast } from "../context/ToastContext";
 
-import heroSarvapindi from "../assets/hero-sarvapindi.png";
-import sarvapindiPlate from "../assets/products/sarvapindi-plate.png";
+import heroSarvapindi from "../assets/hero-sarvapindi.webp";
+import sarvapindiPlate from "../assets/products/sarvapindi-plate.webp";
 
-import bunMaskaCard from "../assets/products/bun-maska-card.png";
-import bunMaskaPlate from "../assets/products/bun-maska-plate.png";
-import potatoTwisterCard from "../assets/products/potato-twister-card.png";
-import potatoTwisterAction from "../assets/products/potato-twister-action.png";
-import bobbatluGhee from "../assets/products/bobbatlu-ghee.png";
-import blueberryBunCard from "../assets/products/blueberry-bun-card.png";
-import blueberryBunPlate from "../assets/products/blueberry-bun-plate.png";
+import bunMaskaCard from "../assets/products/bun-maska-card.webp";
+import bunMaskaPlate from "../assets/products/bun-maska-plate.webp";
+import potatoTwisterCard from "../assets/products/potato-twister-card.webp";
+import potatoTwisterAction from "../assets/products/potato-twister-action.webp";
+import bobbatluGhee from "../assets/products/bobbatlu-ghee.webp";
+import blueberryBunCard from "../assets/products/blueberry-bun-card.webp";
+import blueberryBunPlate from "../assets/products/blueberry-bun-plate.webp";
 
-import bunMaska from "../assets/products/bun-maska.png";
-import blueberryBun from "../assets/products/blueberry-bun.png";
-import mangoCreamBun from "../assets/products/mango-cream-bun.png";
-import potatoTwister from "../assets/products/potato-twister.png";
-import bobbatlu from "../assets/products/bobbatlu.png";
-import chocolateBobbatlu from "../assets/products/chocolate-bobbatlu.png";
-import carrotBobbatlu from "../assets/products/carrot-bobbatlu.png";
-import sarvapindi from "../assets/products/sarvapindi.png";
+import bunMaska from "../assets/products/bun-maska.webp";
+import blueberryBun from "../assets/products/blueberry-bun.webp";
+import mangoCreamBun from "../assets/products/mango-cream-bun.webp";
+import potatoTwister from "../assets/products/potato-twister.webp";
+import bobbatlu from "../assets/products/bobbatlu.webp";
+import chocolateBobbatlu from "../assets/products/chocolate-bobbatlu.webp";
+import carrotBobbatlu from "../assets/products/carrot-bobbatlu.webp";
+import sarvapindi from "../assets/products/sarvapindi.webp";
 
 /* ── TERRACOTTA & CREAM PALETTE ──
   page bg:        #FFF8ED
