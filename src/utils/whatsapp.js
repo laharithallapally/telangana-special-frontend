@@ -1,7 +1,7 @@
 // Central place to configure the business WhatsApp number.
 // Use the FULL international number, digits only, no +, no spaces, no leading 0.
 // Example: for +91 98765 43210, this should be "919876543210".
-export const WHATSAPP_NUMBER = "919876543210"; // TODO: replace with your real WhatsApp Business number
+export const WHATSAPP_NUMBER = "+916301073289"; // TODO: replace with your real WhatsApp Business number
 
 /**
  * Builds a wa.me link that opens WhatsApp (app on mobile, web on desktop)
