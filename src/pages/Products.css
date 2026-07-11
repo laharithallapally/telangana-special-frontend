@@ -267,6 +267,12 @@
   font-size: 13px;
   transition: all 0.2s;
   cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-sizing: border-box;
 }
 
 .view-btn {
@@ -275,9 +281,6 @@
   color: var(--text-secondary);
   border: 1px solid var(--border);
   text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .view-btn:hover {
@@ -287,7 +290,7 @@
 }
 
 .cart-btn {
-  padding: 0 14px;
+  padding: 0 16px;
   background: var(--primary);
   color: white;
   border: none;
@@ -309,9 +312,6 @@
 }
 
 .whatsapp-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 36px;
   padding: 0;
   background: #25D366;
