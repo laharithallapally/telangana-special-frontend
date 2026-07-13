@@ -22,7 +22,7 @@ import bobbatlu from "../assets/products/bobbatlu.webp";
 import chocolateBobbatlu from "../assets/products/chocolate-bobbatlu.webp";
 import carrotBobbatlu from "../assets/products/carrot-bobbatlu.webp";
 import sarvapindi from "../assets/products/sarvapindi.webp";
-
+import { buildWhatsAppLink, whatsAppOrderMessage } from "../utils/whatsapp";
 /* ── TERRACOTTA & CREAM PALETTE ──
   page bg:        #FFF8ED
   section alt bg: #FDF1DD
@@ -141,6 +141,20 @@ const TESTIMONIALS = [
   { name: "Anitha M.", area: "Gachibowli", quote: "Booked bulk Bobbatlu for a family function — everyone asked where I got it from. Truly homemade taste.", stars: 4 },
 ];
 
+/* ── AMBIENT FLOATING ICONS ──
+   A quiet, persistent layer of drifting food emoji over the hero —
+   independent of which slide is active, so the hero always feels alive. */
+const AMBIENT_ICONS = [
+  { icon: "🌶️", left: "3%",  top: "12%", size: "26px", delay: "0s",   duration: "7s" },
+  { icon: "🫓", left: "9%",  top: "68%", size: "22px", delay: "1.4s", duration: "8.5s" },
+  { icon: "🍯", left: "34%", top: "8%",  size: "20px", delay: "0.6s", duration: "6.5s" },
+  { icon: "🧈", left: "64%", top: "6%",  size: "22px", delay: "2s",   duration: "7.5s" },
+  { icon: "🥛", left: "88%", top: "14%", size: "24px", delay: "0.9s", duration: "9s" },
+  { icon: "🌿", left: "93%", top: "60%", size: "20px", delay: "1.8s", duration: "6.8s" },
+  { icon: "🍬", left: "20%", top: "82%", size: "20px", delay: "2.4s", duration: "8s" },
+  { icon: "🥜", left: "80%", top: "80%", size: "20px", delay: "1.1s", duration: "7.2s" },
+];
+
 export default function Home() {
   const navigate = useNavigate();
   const { showToast } = useToast();
@@ -245,6 +259,14 @@ export default function Home() {
   const categories = liveCategories.length ? liveCategories : CATEGORY_FALLBACK;
 
   const bestSellers = products.length ? products.slice(0, 8) : FALLBACK_BEST_SELLERS;
+  // Today's Special — rotates automatically based on the date, no admin needed
+  const specialPool = products.length ? products : FALLBACK_BEST_SELLERS;
+  const dayOfYear = Math.floor(
+    (Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000
+  );
+  const todaysSpecial = specialPool.length
+    ? specialPool[dayOfYear % specialPool.length]
+    : null;
 
   const goToCategory = (name) => navigate(`/products?category=${encodeURIComponent(name)}`);
 
@@ -308,6 +330,17 @@ export default function Home() {
           background:#8A4A1E; opacity:0; pointer-events:none;
           animation:masalaFall 2.6s ease-in both;
         }
+        @keyframes floatDrift {
+          0%   { transform:translateY(0) rotate(0deg); opacity:.16; }
+          50%  { transform:translateY(-22px) rotate(8deg); opacity:.34; }
+          100% { transform:translateY(0) rotate(0deg); opacity:.16; }
+        }
+        .floating-icon {
+          position:absolute; pointer-events:none;
+          animation-name:floatDrift; animation-timing-function:ease-in-out; animation-iteration-count:infinite;
+          filter:drop-shadow(0 4px 10px rgba(0,0,0,.3));
+          will-change:transform;
+        }
         .ts-card { transition:transform .25s,box-shadow .25s; cursor:pointer; }
         .ts-card:hover { transform:translateY(-5px); box-shadow:0 14px 30px rgba(213,101,46,.18)!important; }
         .ts-add:hover  { background:#B5501F!important; }
@@ -335,6 +368,7 @@ export default function Home() {
           .hero-copy { position:relative!important; left:auto!important; right:auto!important; top:auto!important; transform:none!important; width:100%!important; padding-left:20px!important; padding-right:20px!important; box-sizing:border-box!important; margin-top:20px!important; text-align:center!important; }
           .hero-callout { position:relative!important; right:auto!important; bottom:auto!important; margin:24px auto 0!important; width:fit-content!important; }
           .hero-arrows { display:none!important; }
+          .floating-icon { display:none!important; }
           .features-strip { gap:0!important; flex-direction:column!important; }
           .features-strip > div { border-right:none!important; border-bottom:1px solid rgba(58,36,24,.1)!important; width:100%!important; }
           .categories-row { grid-template-columns:repeat(3,1fr)!important; }
@@ -409,6 +443,25 @@ export default function Home() {
           position: "absolute", inset: 0, zIndex: 1,
           background: "linear-gradient(100deg, rgba(20,12,7,.82) 0%, rgba(20,12,7,.55) 42%, rgba(20,12,7,.15) 70%, rgba(20,12,7,.35) 100%)",
         }} />
+
+        {/* ambient floating food icons — always on, independent of active slide */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 2, overflow: "hidden", pointerEvents: "none" }}>
+          {AMBIENT_ICONS.map((ic, idx) => (
+            <span
+              key={idx}
+              className="floating-icon"
+              style={{
+                left: ic.left,
+                top: ic.top,
+                fontSize: ic.size,
+                animationDelay: ic.delay,
+                animationDuration: ic.duration,
+              }}
+            >
+              {ic.icon}
+            </span>
+          ))}
+        </div>
 
         {slide === SLIDES.findIndex((s) => s.shine) && (
           <div key={`shine-${slide}`} style={{
