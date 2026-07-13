@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import api from "../api/axiosConfig";
 import { useToast } from "../context/ToastContext";
 import { buildWhatsAppLink, whatsAppOrderMessage } from "../utils/whatsapp";
+import { flyToCart } from "../utils/flyToCart";
 import "./Products.css";
 
 function Products() {
@@ -69,7 +70,7 @@ function Products() {
     }
   };
 
-  const addToCart = async (productId, productName) => {
+  const addToCart = async (productId, productName, sourceEl) => {
     const token = localStorage.getItem('token')
     if (!token) {
       showToast('Please login first!', 'error')
@@ -77,6 +78,7 @@ function Products() {
     }
     try {
       await api.post('/cart', { productId, quantity: 1 })
+      flyToCart(sourceEl)
       // show added state on button
       setAddedItems(prev => ({ ...prev, [productId]: true }))
       showToast(`${productName} added to cart`, 'success')
@@ -246,6 +248,16 @@ const orderOnWhatsApp = (product) => {
                   </span>
                 </div>
 
+                {product.reviewCount > 0 ? (
+                  <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                    <span style={{ color: '#f5a623' }}>★</span> {product.averageRating.toFixed(1)} ({product.reviewCount})
+                  </div>
+                ) : (
+                  <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px', opacity: 0.6 }}>
+                    No reviews yet
+                  </div>
+                )}
+
                               </div>
                     <div className="product-footer">
                   <span className="price">₹{product.price}</span>
@@ -255,7 +267,7 @@ const orderOnWhatsApp = (product) => {
                     </Link>
                     <button
                       className={`cart-btn ${addedItems[product.id] ? 'added' : ''}`}
-                      onClick={() => addToCart(product.id, product.name)}
+                      onClick={(e) => addToCart(product.id, product.name, e.currentTarget)}
                       disabled={product.available === false}
                     >
                       {addedItems[product.id] ? '✅ Added!' : '🛒 Add'}

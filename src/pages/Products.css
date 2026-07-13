@@ -304,6 +304,13 @@
 
 .cart-btn.added {
   background: #2ecc71;
+  animation: addPop 0.35s ease;
+}
+
+@keyframes addPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
 }
 
 .cart-btn:disabled {

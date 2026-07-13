@@ -80,6 +80,14 @@ function Navbar({ cartCount = 0 }) {
         .ts-order-btn { transition: background 0.2s, transform 0.15s; }
         .ts-order-btn:hover { background: #c9521e !important; transform: scale(1.03); }
 
+        @keyframes cartBump {
+          0%   { transform: scale(1); }
+          30%  { transform: scale(1.35) rotate(-8deg); }
+          60%  { transform: scale(0.92) rotate(4deg); }
+          100% { transform: scale(1) rotate(0deg); }
+        }
+        .cart-bump { animation: cartBump 0.35s ease; }
+
         .ts-utility-bar {
           background: #faeeda;
           border-bottom: 1px solid rgba(201,82,30,0.12);
@@ -229,7 +237,7 @@ function Navbar({ cartCount = 0 }) {
 
           {/* Cart */}
           {user && (
-            <Link to="/cart" className="ts-hide-mobile" style={{
+            <Link id="navbar-cart-icon" to="/cart" className="ts-hide-mobile" style={{
               position: "relative", textDecoration: "none",
               fontSize: "22px", color: "#3a1a00",
               display: "flex", alignItems: "center",
