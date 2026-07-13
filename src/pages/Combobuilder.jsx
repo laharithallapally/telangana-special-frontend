@@ -210,12 +210,32 @@ function ComboBuilder() {
                 <span className="combo-plate-empty-icon">🍽️</span>
               ) : (
                 <div className="combo-plate-chips">
-                  {plateEntries.map((item) => (
-                    <div className="combo-plate-chip" key={item.id} title={item.name}>
-                      <span className="combo-plate-chip-emoji">🍘</span>
-                      {item.quantity > 1 && <span className="combo-plate-chip-qty">{item.quantity}</span>}
-                    </div>
-                  ))}
+                  {plateEntries.map((item) => {
+                    const hasImage =
+                      item.image && item.image.trim() !== "" && !item.image.includes("example.com");
+                    return (
+                      <div className="combo-plate-chip" key={item.id} title={item.name}>
+                        {hasImage ? (
+                          <img
+                            className="combo-plate-chip-img"
+                            src={item.image}
+                            alt={item.name}
+                            onError={(e) => {
+                              e.target.style.display = "none";
+                              e.target.nextSibling.style.display = "flex";
+                            }}
+                          />
+                        ) : null}
+                        <span
+                          className="combo-plate-chip-emoji"
+                          style={{ display: hasImage ? "none" : "flex" }}
+                        >
+                          🍘
+                        </span>
+                        {item.quantity > 1 && <span className="combo-plate-chip-qty">{item.quantity}</span>}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
