@@ -420,8 +420,74 @@
   cursor: not-allowed;
 }
 
+/* ─── Skeleton Loader ─── */
+.skeleton-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-img {
+  width: 100%;
+  height: 200px;
+}
+
+.skeleton-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeleton-line {
+  height: 12px;
+  border-radius: 6px;
+}
+
+.skeleton-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.skeleton-price {
+  width: 60px;
+  height: 20px;
+  border-radius: 6px;
+}
+
+.skeleton-btn {
+  width: 80px;
+  height: 36px;
+  border-radius: 8px;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #1e1e1e 25%, #2a2a2a 37%, #1e1e1e 63%);
+  background-size: 400% 100%;
+}
+
+.shimmer {
+  animation: skeleton-shimmer 1.4s ease infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 /* ─── Mobile ─── */
 @media (max-width: 768px) {
+  .skeleton-img {
+    height: 150px;
+  }
+
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 16px;

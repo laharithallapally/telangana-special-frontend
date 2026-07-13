@@ -363,6 +363,16 @@ export default function Home() {
         .hero-bg-img.active { animation:heroKenBurns 12s ease-out forwards; }
         .ts-newsbtn:hover { background:#B5501F!important; }
 
+        .hm-skel {
+          background: linear-gradient(90deg, #F3E4CC 25%, #FDF1DD 37%, #F3E4CC 63%);
+          background-size: 400% 100%;
+        }
+        .hm-shimmer { animation: hmShimmer 1.4s ease infinite; }
+        @keyframes hmShimmer {
+          0%   { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
         @media (max-width:768px) {
           .hero-carousel { height:auto!important; min-height:100vh!important; padding:100px 0 40px!important; }
           .hero-copy { position:relative!important; left:auto!important; right:auto!important; top:auto!important; transform:none!important; width:100%!important; padding-left:20px!important; padding-right:20px!important; box-sizing:border-box!important; margin-top:20px!important; text-align:center!important; }
@@ -812,7 +822,23 @@ export default function Home() {
         </div>
 
         {loadingProducts ? (
-          <div style={{ textAlign: "center", padding: "40px 0", color: "#A88A68" }}>Loading menu…</div>
+          <div className="bestsellers-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: "18px" }}>
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} style={{
+                background: "#fff", borderRadius: "14px", overflow: "hidden",
+                border: "1px solid rgba(58,36,24,.08)", boxShadow: "0 2px 10px rgba(58,36,24,.06)",
+              }}>
+                <div className="hm-skel hm-shimmer" style={{ width: "100%", height: "148px" }} />
+                <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: "10px" }}>
+                  <div className="hm-skel hm-shimmer" style={{ height: "12px", borderRadius: "6px", width: "75%" }} />
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div className="hm-skel hm-shimmer" style={{ height: "16px", width: "44px", borderRadius: "6px" }} />
+                    <div className="hm-skel hm-shimmer" style={{ height: "28px", width: "64px", borderRadius: "8px" }} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
           <div className="bestsellers-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: "18px" }}>
             {bestSellers.map((item, i) => (

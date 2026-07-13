@@ -6,6 +6,7 @@ import api from "../api/axiosConfig";
 const NAV_LINKS = [
   { to: "/home",      label: "Home" },
   { to: "/products",  label: "Menu" },
+  { to: "/combo",     label: "Build a Plate" },
   { to: "/about",     label: "Our Story" },
   { to: "/locations", label: "Locations" },
   { to: "/contact",   label: "Contact" },

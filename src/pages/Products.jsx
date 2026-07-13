@@ -163,9 +163,27 @@ function Products() {
 
   if (loading) {
     return (
-      <div className="loading">
-        <div className="loading-spinner"></div>
-        <p>Loading products...</p>
+      <div className="products-page">
+        <div className="products-header">
+          <h1 className="page-title">🌶️ Telangana Special Products</h1>
+          <p className="page-subtitle">Authentic homemade Telangana food products</p>
+        </div>
+        <div className="products-grid">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div className="skeleton-card" key={i}>
+              <div className="skeleton shimmer skeleton-img" />
+              <div className="skeleton-body">
+                <div className="skeleton shimmer skeleton-line" style={{ width: '70%' }} />
+                <div className="skeleton shimmer skeleton-line" style={{ width: '95%' }} />
+                <div className="skeleton shimmer skeleton-line" style={{ width: '60%' }} />
+                <div className="skeleton-footer">
+                  <div className="skeleton shimmer skeleton-price" />
+                  <div className="skeleton shimmer skeleton-btn" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     )
   }

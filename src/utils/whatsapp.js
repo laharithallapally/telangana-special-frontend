@@ -36,3 +36,18 @@ export function whatsAppCartMessage(cart) {
     `Please confirm availability and delivery details. Thank you!`
   );
 }
+
+/** Opens a WhatsApp chat with a pre-filled message for a custom-built combo plate. */
+export function whatsAppComboMessage(items, total) {
+  const lines = items
+    .map(item => `• ${item.quantity}x ${item.name} - ₹${item.price * item.quantity}`)
+    .join("\n");
+
+  return (
+    `Hi Telangana Special! 👋\n` +
+    `I built my own combo plate and would like to order:\n\n` +
+    `${lines}\n\n` +
+    `Total: ₹${total}\n\n` +
+    `Please confirm availability and delivery details. Thank you!`
+  );
+}
