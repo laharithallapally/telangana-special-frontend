@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import api from '../api/axiosConfig'
 import { useNavigate, Link } from 'react-router-dom'
 import { buildWhatsAppLink, whatsAppCartMessage } from '../utils/whatsapp'
@@ -10,6 +10,10 @@ function Cart() {
   const [loading, setLoading] = useState(true)
   const [ordering, setOrdering] = useState(false)
   const navigate = useNavigate()
+
+  // WhatsApp button micro-interaction
+  const [waBounce, setWaBounce] = useState(false)
+  const waBtnRef = useRef(null)
 
   useEffect(() => {
     fetchCart()
@@ -131,9 +135,31 @@ function Cart() {
     }
   }
 
-  const orderOnWhatsApp = () => {
+  const orderOnWhatsApp = async () => {
+    setWaBounce(true)
+    setTimeout(() => setWaBounce(false), 500)
+
+    try {
+      const confetti = (await import('canvas-confetti')).default
+      const rect = waBtnRef.current.getBoundingClientRect()
+      confetti({
+        particleCount: 70,
+        spread: 55,
+        startVelocity: 35,
+        origin: {
+          x: (rect.left + rect.width / 2) / window.innerWidth,
+          y: (rect.top + rect.height / 2) / window.innerHeight,
+        },
+        colors: ['#25D366', '#E3A008', '#4A161A', '#F5EBD6'],
+        scalar: 0.9,
+        ticks: 120,
+      })
+    } catch (err) {
+      console.error('Confetti failed to load:', err)
+    }
+
     const link = buildWhatsAppLink(whatsAppCartMessage(cart))
-    window.open(link, '_blank', 'noopener,noreferrer')
+    setTimeout(() => window.open(link, '_blank', 'noopener,noreferrer'), 250)
   }
 
   if (loading) {
@@ -267,7 +293,9 @@ function Cart() {
         </button>
 
         <button
+          ref={waBtnRef}
           onClick={orderOnWhatsApp}
+          className={waBounce ? 'wa-bounce' : ''}
           style={{
             width: '100%',
             display: 'flex',
@@ -300,6 +328,19 @@ function Cart() {
           🔒 Secured by Razorpay
         </p>
       </div>
+
+      <style>{`
+        @keyframes wa-bounce {
+          0%   { transform: scale(1); }
+          30%  { transform: scale(0.92); }
+          55%  { transform: scale(1.08); }
+          80%  { transform: scale(0.98); }
+          100% { transform: scale(1); }
+        }
+        .wa-bounce {
+          animation: wa-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+      `}</style>
 
     </div>
   )

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import api from "../api/axiosConfig";
 import { useToast } from "../context/ToastContext";
@@ -24,6 +24,10 @@ function ProductDetails() {
   const [hoverRating, setHoverRating] = useState(0);
   const [myComment, setMyComment] = useState("");
   const [submittingReview, setSubmittingReview] = useState(false);
+
+  // WhatsApp button micro-interaction
+  const [waBounce, setWaBounce] = useState(false);
+  const waBtnRef = useRef(null);
 
   useEffect(() => {
     fetchProduct();
@@ -145,6 +149,35 @@ function ProductDetails() {
     } finally {
       setAdding(false);
     }
+  };
+
+  const handleWhatsAppClick = async (e) => {
+    e.preventDefault(); // hold off navigation so the animation is visible first
+
+    setWaBounce(true);
+    setTimeout(() => setWaBounce(false), 500);
+
+    try {
+      const confetti = (await import("canvas-confetti")).default;
+      const rect = waBtnRef.current.getBoundingClientRect();
+      confetti({
+        particleCount: 60,
+        spread: 55,
+        startVelocity: 35,
+        origin: {
+          x: (rect.left + rect.width / 2) / window.innerWidth,
+          y: (rect.top + rect.height / 2) / window.innerHeight,
+        },
+        colors: ["#25D366", "#E3A008", "#4A161A", "#F5EBD6"],
+        scalar: 0.9,
+        ticks: 120,
+      });
+    } catch (err) {
+      console.error("Confetti failed to load:", err);
+    }
+
+    const link = buildWhatsAppLink(whatsAppOrderMessage(product, quantity));
+    setTimeout(() => window.open(link, "_blank", "noopener,noreferrer"), 250);
   };
 
   if (loading) {
@@ -281,9 +314,12 @@ function ProductDetails() {
 
           {!outOfStock && (
             <a
+              ref={waBtnRef}
               href={buildWhatsAppLink(whatsAppOrderMessage(product, quantity))}
+              onClick={handleWhatsAppClick}
               target="_blank"
               rel="noopener noreferrer"
+              className={waBounce ? "wa-bounce" : ""}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -386,6 +422,16 @@ function ProductDetails() {
           .product-details-grid {
             grid-template-columns: 1fr !important;
           }
+        }
+        @keyframes wa-bounce {
+          0%   { transform: scale(1); }
+          30%  { transform: scale(0.92); }
+          55%  { transform: scale(1.08); }
+          80%  { transform: scale(0.98); }
+          100% { transform: scale(1); }
+        }
+        .wa-bounce {
+          animation: wa-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
       `}</style>
     </div>

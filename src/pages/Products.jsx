@@ -14,6 +14,7 @@ function Products() {
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "All");
   const [addedItems, setAddedItems] = useState({});
   const [wishlistIds, setWishlistIds] = useState(new Set());
+  const [waBounceIds, setWaBounceIds] = useState({});
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -90,12 +91,36 @@ function Products() {
       showToast('Failed to add to cart!', 'error')
     }
   }
-const orderOnWhatsApp = (product) => {
-    const link = buildWhatsAppLink(whatsAppOrderMessage(product, 1))
-    window.open(link, '_blank', 'noopener,noreferrer')
-  }
 
-  // get unique categories
+  const orderOnWhatsApp = async (product, sourceEl) => {
+    // bounce just this product's button
+    setWaBounceIds(prev => ({ ...prev, [product.id]: true }))
+    setTimeout(() => {
+      setWaBounceIds(prev => ({ ...prev, [product.id]: false }))
+    }, 500)
+
+    try {
+      const confetti = (await import('canvas-confetti')).default
+      const rect = sourceEl.getBoundingClientRect()
+      confetti({
+        particleCount: 50,
+        spread: 50,
+        startVelocity: 32,
+        origin: {
+          x: (rect.left + rect.width / 2) / window.innerWidth,
+          y: (rect.top + rect.height / 2) / window.innerHeight,
+        },
+        colors: ['#25D366', '#E3A008', '#4A161A', '#F5EBD6'],
+        scalar: 0.8,
+        ticks: 110,
+      })
+    } catch (err) {
+      console.error('Confetti failed to load:', err)
+    }
+
+    const link = buildWhatsAppLink(whatsAppOrderMessage(product, 1))
+    setTimeout(() => window.open(link, '_blank', 'noopener,noreferrer'), 250)
+  }
 
   // get unique categories
   const categories = ['All', ...new Set(products.map(p => p.category).filter(Boolean))]
@@ -273,8 +298,8 @@ const orderOnWhatsApp = (product) => {
                       {addedItems[product.id] ? '✅ Added!' : '🛒 Add'}
                     </button>
                     <button
-                      className="whatsapp-btn"
-                      onClick={() => orderOnWhatsApp(product)}
+                      className={`whatsapp-btn ${waBounceIds[product.id] ? 'wa-bounce' : ''}`}
+                      onClick={(e) => orderOnWhatsApp(product, e.currentTarget)}
                       disabled={product.available === false}
                       title={`Order ${product.name} on WhatsApp`}
                     >
@@ -288,6 +313,19 @@ const orderOnWhatsApp = (product) => {
           ))}
         </div>
       )}
+
+      <style>{`
+        @keyframes wa-bounce {
+          0%   { transform: scale(1); }
+          30%  { transform: scale(0.9); }
+          55%  { transform: scale(1.12); }
+          80%  { transform: scale(0.97); }
+          100% { transform: scale(1); }
+        }
+        .wa-bounce {
+          animation: wa-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+      `}</style>
     </div>
   );
 }
