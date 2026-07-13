@@ -20,6 +20,8 @@ import AdminEditProduct from "./pages/AdminEditProduct";
 import AdminOrders from "./pages/AdminOrders";
 import ManageProducts from "./pages/ManageProducts";
 import AdminDashboard from "./pages/AdminDashboard";
+import AboutUs from "./pages/AboutUs";
+import Locations from "./pages/Locations";
 
 import './App.css';
 
@@ -31,6 +33,8 @@ function App() {
       <Routes>
 
         <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
+        <Route path="/about" element={<AboutUs />} />
+<Route path="/locations" element={<Locations />} />
        <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
 
 
