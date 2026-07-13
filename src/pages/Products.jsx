@@ -12,6 +12,9 @@ function Products() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "All");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [sortBy, setSortBy] = useState("relevance");
   const [addedItems, setAddedItems] = useState({});
   const [wishlistIds, setWishlistIds] = useState(new Set());
   const [waBounceIds, setWaBounceIds] = useState({});
@@ -125,11 +128,37 @@ function Products() {
   // get unique categories
   const categories = ['All', ...new Set(products.map(p => p.category).filter(Boolean))]
 
+  // highest price in the catalog — used as the placeholder/upper bound for the price inputs
+  const highestPrice = products.length ? Math.max(...products.map(p => p.price)) : 0
+
+  const hasActiveFilters = search !== '' || selectedCategory !== 'All' || minPrice !== '' || maxPrice !== '' || sortBy !== 'relevance'
+
+  const clearFilters = () => {
+    setSearch('')
+    setSelectedCategory('All')
+    setMinPrice('')
+    setMaxPrice('')
+    setSortBy('relevance')
+  }
+
   // filter products
   const filteredProducts = products.filter(p => {
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase())
     const matchCategory = selectedCategory === 'All' || p.category === selectedCategory
-    return matchSearch && matchCategory
+    const matchMin = minPrice === '' || p.price >= Number(minPrice)
+    const matchMax = maxPrice === '' || p.price <= Number(maxPrice)
+    return matchSearch && matchCategory && matchMin && matchMax
+  })
+
+  // sort products (does not mutate the filtered array in place)
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    switch (sortBy) {
+      case 'price-asc': return a.price - b.price
+      case 'price-desc': return b.price - a.price
+      case 'rating': return (b.averageRating || 0) - (a.averageRating || 0)
+      case 'name': return a.name.localeCompare(b.name)
+      default: return 0
+    }
   })
 
   if (loading) {
@@ -173,25 +202,73 @@ function Products() {
             </button>
           ))}
         </div>
+
+        <div className="secondary-filters">
+          <div className="price-range">
+            <span className="price-range-label">₹</span>
+            <input
+              type="number"
+              min="0"
+              inputMode="numeric"
+              placeholder="Min"
+              value={minPrice}
+              onChange={(e) => setMinPrice(e.target.value)}
+            />
+            <span className="price-range-sep">–</span>
+            <span className="price-range-label">₹</span>
+            <input
+              type="number"
+              min="0"
+              inputMode="numeric"
+              placeholder={highestPrice ? `Max (${highestPrice})` : 'Max'}
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+            />
+          </div>
+
+          <select
+            className="sort-select"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            aria-label="Sort products"
+          >
+            <option value="relevance">Sort: Relevance</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Rating: High to Low</option>
+            <option value="name">Name: A to Z</option>
+          </select>
+
+          {hasActiveFilters && (
+            <button className="clear-filters-btn" onClick={clearFilters}>
+              Clear filters ✕
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Results count */}
       <div className="results-count">
-        {filteredProducts.length} products found
+        {sortedProducts.length} products found
       </div>
 
       {/* Products Grid */}
-      {filteredProducts.length === 0 ? (
+      {sortedProducts.length === 0 ? (
         <div className="empty-cart">
           <div style={{ fontSize: '48px' }}>😕</div>
           <h2>No products found!</h2>
           <p style={{ color: 'var(--text-secondary)' }}>
-            Try searching with different keywords
+            Try adjusting your search, category, or price filters
           </p>
+          {hasActiveFilters && (
+            <button className="clear-filters-btn" onClick={clearFilters} style={{ marginTop: '12px' }}>
+              Clear filters ✕
+            </button>
+          )}
         </div>
       ) : (
         <div className="products-grid">
-          {filteredProducts.map((product) => (
+          {sortedProducts.map((product) => (
             <div className="product-card" key={product.id}>
 
               {/* Product Image */}

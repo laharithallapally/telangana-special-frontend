@@ -97,6 +97,89 @@
   margin-bottom: 20px;
 }
 
+/* ─── Secondary Filters: price range, sort, clear ─── */
+.secondary-filters {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.price-range {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 7px 12px;
+}
+
+.price-range-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.price-range-sep {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.price-range input {
+  width: 64px;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 14px;
+  /* hide number spinner arrows so it matches the search box's clean look */
+  -moz-appearance: textfield;
+}
+
+.price-range input::-webkit-outer-spin-button,
+.price-range input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.price-range input::placeholder {
+  color: #555;
+}
+
+.sort-select {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 14px;
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.sort-select:hover,
+.sort-select:focus {
+  border-color: var(--primary);
+}
+
+.clear-filters-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 7px 16px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.clear-filters-btn:hover {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
 /* ─── Products Grid ─── */
 .products-grid {
   display: grid;
@@ -381,5 +464,23 @@
     width: 34px;
     height: 34px;
     flex-shrink: 0;
+  }
+
+  .secondary-filters {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .price-range,
+  .sort-select,
+  .clear-filters-btn {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .price-range input {
+    flex: 1;
+    width: auto;
   }
 }
