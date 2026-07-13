@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../api/axiosConfig";
 import { useToast } from "../context/ToastContext";
 import { buildWhatsAppLink, whatsAppComboMessage } from "../utils/whatsapp";
-import "./ComboBuilder.css";
+import "./Combobuilder.css";
 
 function ComboBuilder() {
   const navigate = useNavigate();
