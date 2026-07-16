@@ -1,7 +1,6 @@
 import axios from "axios";
-
 const api = axios.create({
-  baseURL: "https://telangana-special-backend.onrender.com/api",
+  baseURL: "http://35.253.21.120:8080/api",
   headers: {
     "Content-Type": "application/json",
   },
