@@ -132,7 +132,6 @@
   outline: none;
   color: var(--text);
   font-size: 14px;
-  /* hide number spinner arrows so it matches the search box's clean look */
   -moz-appearance: textfield;
 }
 
@@ -193,13 +192,12 @@
   border: 1px solid var(--border);
   border-radius: 16px;
   overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  transition: box-shadow 0.2s, border-color 0.2s;
   display: flex;
   flex-direction: column;
 }
 
 .product-card:hover {
-  transform: translateY(-6px);
   box-shadow: 0 12px 30px rgba(0,0,0,0.3);
   border-color: var(--primary);
 }
@@ -341,7 +339,6 @@
   gap: 8px;
 }
 
-/* Shared sizing so Details / Add / WhatsApp line up on one baseline */
 .view-btn,
 .cart-btn,
 .whatsapp-btn {
