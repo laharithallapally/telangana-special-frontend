@@ -23,7 +23,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AboutUs from "./pages/AboutUs";
 import Locations from "./pages/Locations";
 import NotFound from "./pages/NotFound";
-import ComboBuilder from "./pages/Combobuilder";
+import ComboBuilder from "./pages/ComboBuilder";
+import GreetingCharacter from "./components/GreetingCharacter";
 
 import './App.css';
 
@@ -31,6 +32,7 @@ function App() {
   return (
     <>
       <Navbar />
+      <GreetingCharacter />
 
       <Routes>
 
@@ -50,10 +52,10 @@ function App() {
         <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path="/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
         <Route path="/products/:id" element={<ProtectedRoute><ProductDetails /></ProtectedRoute>} />
+        <Route path="/combo" element={<ProtectedRoute><ComboBuilder /></ProtectedRoute>} />
 
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
-        <Route path="/combo" element={<ProtectedRoute><ComboBuilder /></ProtectedRoute>} />
         <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
 
         {/* Admin Routes */}
