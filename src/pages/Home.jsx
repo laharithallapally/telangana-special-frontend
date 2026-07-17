@@ -107,11 +107,11 @@ const FEATURES = [
 ];
 
 const SPECIALITY_PRODUCTS = [
-  { name: "Bun Maska",      tagline: "Soft. Warm. Irresistible.",     image: bunMaskaCard,      specialty: false },
-  { name: "Potato Twister", tagline: "Crispy. Spicy. Addictive.",     image: potatoTwisterCard, specialty: false },
-  { name: "Sarvapindi",     tagline: "Telangana's Timeless Classic.", image: heroSarvapindi,    specialty: true  },
-  { name: "Bobbatlu",       tagline: "Sweet. Soft. Soulful.",         image: bobbatluGhee,      specialty: false },
-  { name: "Blueberry Bun",  tagline: "Sweet meets Street.",           image: blueberryBunCard,  specialty: false },
+  { name: "Bun Maska",      tagline: "Soft. Warm. Irresistible.",     image: bunMaskaPlate,      specialty: false, hot: true  },
+  { name: "Potato Twister", tagline: "Crispy. Spicy. Addictive.",     image: potatoTwisterAction, specialty: false, hot: false },
+  { name: "Sarvapindi",     tagline: "Telangana's Timeless Classic.", image: sarvapindiPlate,    specialty: true,  hot: true  },
+  { name: "Bobbatlu",       tagline: "Sweet. Soft. Soulful.",         image: bobbatluGhee,       specialty: false, hot: true  },
+  { name: "Blueberry Bun",  tagline: "Sweet meets Street.",           image: blueberryBunPlate,  specialty: false, hot: false },
 ];
 
 const FALLBACK_BEST_SELLERS = [
@@ -350,6 +350,20 @@ export default function Home() {
         .ts-heart:hover { color:#D5652E!important; }
         .img-zoom { transition:transform .45s ease; }
         .img-zoom:hover { transform:scale(1.06); }
+        .specialty-img { filter: saturate(1.12) contrast(1.05) brightness(0.96); }
+        .steam-wisp {
+          position:absolute; bottom:55%; width:5px; height:20px; border-radius:3px;
+          background:rgba(255,235,210,.6); filter:blur(2px); opacity:0; pointer-events:none;
+          animation:steamRise 3s infinite ease-in;
+        }
+        .sw1 { left:42%; animation-delay:0s; }
+        .sw2 { left:50%; animation-delay:1s; }
+        .sw3 { left:58%; animation-delay:2s; }
+        @keyframes steamRise {
+          0%   { transform:translateY(0) scaleX(1); opacity:0; }
+          20%  { opacity:.75; }
+          100% { transform:translateY(-50px) scaleX(1.7); opacity:0; }
+        }
         .about-img-reveal {
           opacity:0; transform:translateX(70px);
           transition:opacity 1s cubic-bezier(.16,.7,.2,1), transform 1s cubic-bezier(.16,.7,.2,1);
@@ -784,8 +798,15 @@ export default function Home() {
                   padding: "4px 12px", borderRadius: "20px", zIndex: 2, whiteSpace: "nowrap",
                 }}>OUR SPECIALITY</div>
               )}
-              <div style={{ width: "100%", height: "180px", overflow: "hidden", background: "#FDF1DD" }}>
-                <img src={item.image} alt={item.name} className="img-zoom" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ width: "100%", height: "180px", overflow: "hidden", background: "#FDF1DD", position: "relative" }}>
+                <img src={item.image} alt={item.name} className="img-zoom specialty-img" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                {item.hot && (
+                  <>
+                    <span className="steam-wisp sw1" />
+                    <span className="steam-wisp sw2" />
+                    <span className="steam-wisp sw3" />
+                  </>
+                )}
               </div>
               <div style={{ padding: "14px 16px 16px" }}>
                 <div style={{ color: "#3A2418", fontWeight: "700", fontSize: "14px", marginBottom: "4px" }}>{item.name}</div>
