@@ -10,6 +10,7 @@ function Register() {
     email: "",
     password: "",
     phone: "",
+    gender: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -144,6 +145,15 @@ function Register() {
               inputMode="numeric"
             />
             {errors.phone && <span className="field-error">{errors.phone}</span>}
+          </div>
+
+          <div className="form-group">
+            <select name="gender" onChange={handleChange} value={formData.gender}>
+              <option value="">Gender (optional)</option>
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+              <option value="other">Prefer not to say</option>
+            </select>
           </div>
 
           <button type="submit" disabled={loading}>
