@@ -38,6 +38,7 @@ function Login() {
         name: response.data.name,
         email: response.data.email,
         role: response.data.role,
+        gender: response.data.gender,
         token: response.data.token
       }));
 
