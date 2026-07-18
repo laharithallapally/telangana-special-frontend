@@ -256,6 +256,16 @@ function Navbar({ cartCount = 0 }) {
             </Link>
           )}
 
+          {/* Profile */}
+          {user && (
+            <Link to="/profile" className="ts-hide-mobile" title="My Profile" style={{
+              textDecoration: "none", fontSize: "22px", color: "#3a1a00",
+              display: "flex", alignItems: "center",
+            }}>
+              👤
+            </Link>
+          )}
+
           {!user ? (
             <>
               <Link to="/" className="ts-hide-mobile" style={{
@@ -367,6 +377,11 @@ function Navbar({ cartCount = 0 }) {
                 color: "#fff", textDecoration: "none", fontSize: "16px", padding: "10px 0",
                 borderBottom: "1px solid rgba(255,255,255,0.07)",
               }}>📦 My Orders</Link>
+
+              <Link to="/profile" onClick={() => setMenuOpen(false)} style={{
+                color: "#fff", textDecoration: "none", fontSize: "16px", padding: "10px 0",
+                borderBottom: "1px solid rgba(255,255,255,0.07)",
+              }}>👤 My Profile</Link>
 
               {user.role === "ADMIN" && (
                 <Link to="/admin" onClick={() => setMenuOpen(false)} style={{
