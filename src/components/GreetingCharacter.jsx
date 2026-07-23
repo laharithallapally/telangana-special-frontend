@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import mascotBoy from "../assets/mascots/mascot-boy.webp";
 import mascotGirl from "../assets/mascots/mascot-girl.webp";
 import "./GreetingCharacter.css";
 
@@ -29,12 +28,6 @@ function GreetingCharacter() {
   const user = JSON.parse(localStorage.getItem("user") || "null");
   const time = getTimeOfDay();
   const content = TIME_CONTENT[time];
-
-  // Opposite-gender mascot: female users see the boy, male users see the girl.
-  // No gender on file (older accounts, or "other") falls back to the boy mascot.
-  const showGirl = user?.gender === "male";
-  const mascotSrc = showGirl ? mascotGirl : mascotBoy;
-  const mascotAlt = showGirl ? "Telangana Special girl mascot" : "Telangana Special boy mascot";
 
   useEffect(() => {
     // fresh per page visit — reset animation + dismissed state on route change or refresh
@@ -71,8 +64,8 @@ function GreetingCharacter() {
       </div>
 
       <img
-        src={mascotSrc}
-        alt={mascotAlt}
+        src={mascotGirl}
+        alt="Telangana Special mascot"
         className={`greeter-mascot ${walkedIn ? "walked-in" : ""}`}
       />
     </div>
